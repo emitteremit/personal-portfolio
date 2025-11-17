@@ -30,7 +30,7 @@ const Header = () => {
           <p className='text-teal-200'>04.</p>
           <Link to="/contact" className="text-white hover:text-teal-200">Contact</Link>
         </div>
-        <Link to='/Resume' className="border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</Link>
+        <Link to='/Resume' className=" font-semibold border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</Link>
       </nav>
       <div className="md:hidden">
         <button className="text-teal-400" onClick={toggleMobileMenu}>
@@ -40,7 +40,7 @@ const Header = () => {
         </button>
       </div>
       <div className={`fixed inset-y-0 left-0 w-64 bg-blue-900 transform ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
-        <div className='p-4 flex flex-col gap-4 '>
+        <div className='p-4 flex flex-col gap-4 font-bold'>
           <div className='flex justify-center'>
 
             <div className="w-40 h-40 flex items-center justify-center text-cyan-400 border-2 border-cyan-400 rounded-full">
@@ -63,7 +63,7 @@ const Header = () => {
             <p className='text-teal-200'>04.</p>
             <Link to="/contact" className="text-white hover:text-teal-200">Contact</Link>
           </div>
-          <button className="border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</button>
+          <Link to='/Resume' className="font-semibold text-center border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</Link>
         </div>
       </div>
       {mobileMenuOpen && (
