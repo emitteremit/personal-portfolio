@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Code, Sparkles, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Body = () => {
   const stats = [
@@ -59,17 +60,17 @@ const Body = () => {
             </div>
 
             <div className="flex flex-wrap gap-4">
-              <a href="/Resume">
+              <Link to="/Resume">
                 <button className="group bg-teal-400 text-blue-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-300 transition-all shadow-lg hover:shadow-teal-400/50 flex items-center gap-2">
                   View My Work
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
-              </a>
-              <a href="/Contact">
+              </Link>
+              <Link to="/Contact">
                 <button className="border-2 border-teal-400 text-teal-400 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-400 hover:text-blue-900 transition-all">
                   Get In Touch
                 </button>
-              </a>
+              </Link>
             </div>
 
             <div className="mt-16 pt-8 border-t border-blue-700">

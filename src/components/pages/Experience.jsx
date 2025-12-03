@@ -2,6 +2,7 @@ import React from 'react';
 import { Briefcase, Calendar, CheckCircle, Code, Rocket, Users } from 'lucide-react';
 import Footer from '../Footer';
 import Header from '../Header';
+import { Link } from 'react-router-dom';
 
 const Experience = () => {
   const experiences = [
@@ -167,11 +168,11 @@ const Experience = () => {
             <p className="text-gray-300 text-lg mb-6">
               Interested in working together or learning more about my experience?
             </p>
-            <a href="/Contact">
+            <Link to="/Contact">
               <button className="bg-teal-400 text-blue-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-300 transition-colors shadow-lg hover:shadow-teal-400/50">
                 Get In Touch
               </button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
