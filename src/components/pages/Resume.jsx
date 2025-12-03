@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, Code } from 'lucide-react';
+import { ExternalLink, Code} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import img1 from '../../assets/imgl.png'
 import img2 from '../../assets/imgl2.png'
 import img3 from '../../assets/imgl3.png'
@@ -166,11 +167,11 @@ const Resume = () => {
             I'm always open to discussing new projects, creative ideas, or opportunities 
             to be part of your vision.
           </p>
-          <a href="/Contact">
+          <Link to="/Contact">
             <button className="bg-blue-900 text-teal-400 px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-800 transition-colors shadow-xl">
               Get In Touch
             </button>
-          </a>
+          </Link>
         </div>
       </div>
       <Footer/>
