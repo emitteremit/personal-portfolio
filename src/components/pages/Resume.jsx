@@ -34,7 +34,7 @@ const projects = [
     description: 'Developed a responsive interior design website using modern web technologies, showcasing stunning portfolio showcases and services. The website features detailed service descriptions, a contact form, and a seamless navigation experience, providing an immersive experience for potential clients. With a sleek design and intuitive interface, the site effectively promotes Lindsey Gilley Interiors expertise and encourages inquiries',
     technologies: ['HTML', 'Tailwind CSS', 'Javascript'],
     role: 'Front-end Developer',
-    link: 'https://www.lindseygilleyinteriors.com/services',
+    link: 'http://www.lindseygilleyinteriors.com/',
     image: img3,
   },
   {
