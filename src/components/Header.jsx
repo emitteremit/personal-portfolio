@@ -16,19 +16,19 @@ const Header = () => {
       <nav className="hidden md:flex justify-center items-center gap-4 font-semibold">
         <div className='flex justify-center items-center gap-1'>
           <p className='text-teal-200'>01.</p>
-          <Link to="/" className="text-white hover:text-teal-200">About</Link>
+          <Link to="/" className="text-white hover:text-teal-200 ">About</Link>
         </div>
         <div className='flex items-center gap-1'>
           <p className='text-teal-200'>02.</p>
-          <Link to="/experience" className="text-white hover:text-teal-200">Experience</Link>
+          <Link to="/experience" className="text-white hover:text-teal-200 ">Experience</Link>
         </div>
         <div className='flex items-center gap-1'>
           <p className='text-teal-200'>03.</p>
-          <Link to="/skills" className="text-white hover:text-teal-200">Skills</Link>
+          <Link to="/skills" className="text-white hover:text-teal-200 ">Skills</Link>
         </div>
         <div className='flex items-center gap-1'>
           <p className='text-teal-200'>04.</p>
-          <Link to="/contact" className="text-white hover:text-teal-200">Contact</Link>
+          <Link to="/contact" className="text-white hover:text-teal-200 ">Contact</Link>
         </div>
         <Link to='/Resume' className=" font-semibold border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</Link>
       </nav>
@@ -49,19 +49,19 @@ const Header = () => {
           </div>
           <div className='flex items-center gap-1 '>
             <p className='text-teal-200'>01.</p>
-            <Link to="/" className="text-white hover:text-teal-200">About</Link>
+            <Link to="/" className="text-white hover:text-teal-200 ">About</Link>
           </div>
           <div className='flex items-center gap-1'>
             <p className='text-teal-200'>02.</p>
-            <Link to="/experience" className="text-white hover:text-teal-200">Experience</Link>
+            <Link to="/experience" className="text-white hover:text-teal-200 ">Experience</Link>
           </div>
           <div className='flex items-center gap-1'>
             <p className='text-teal-200'>03.</p>
-            <Link to="/skills" className="text-white hover:text-teal-200">Skills</Link>
+            <Link to="/skills" className="text-white hover:text-teal-200 ">Skills</Link>
           </div>
           <div className='flex items-center gap-1'>
             <p className='text-teal-200'>04.</p>
-            <Link to="/contact" className="text-white hover:text-teal-200">Contact</Link>
+            <Link to="/contact" className="text-white hover:text-teal-200 ">Contact</Link>
           </div>
           <Link to='/Resume' className="font-semibold text-center border border-teal-400 text-teal-400 px-2 py-1 rounded-lg hover:bg-teal-400 hover:text-blue-900">Works</Link>
         </div>
