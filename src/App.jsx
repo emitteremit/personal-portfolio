@@ -1,10 +1,10 @@
 import React from 'react'
-import Homepage from './components/pages/Homepage'
 import {Routes, Route, BrowserRouter as Router  } from "react-router-dom";
-import Experience from './components/pages/Experience';
-import Skills from './components/pages/Skills';
-import Contact from './components/pages/Contact';
-import Resume from './components/pages/Resume';
+import Experience from './pages/Experience';
+import Skills from './pages/Skills';
+import Contact from './pages/Contact';
+import Resume from './pages/Resume';
+import Homepage from './pages/Homepage';
 
 function App() {
 

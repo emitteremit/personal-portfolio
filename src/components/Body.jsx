@@ -11,7 +11,7 @@ const Body = () => {
 
   return (
     <>
-      <main className="bg-blue-900 text-white min-h-screen flex items-center">
+      <main className="bg-black text-white min-h-screen flex items-center">
         <div className="container mx-auto px-6 sm:px-12 lg:px-24 py-20">
           <div className="max-w-5xl">
             <div className="flex items-center gap-3 mb-4">
@@ -37,7 +37,7 @@ const Body = () => {
 
             <p className="text-gray-400 text-lg leading-relaxed max-w-2xl mb-8">
               As a results-driven front-end developer with 3+ years of experience, I have
-              successfully delivered over 10+ projects, driving a{' '}
+              successfully delivered over <span className='text-teal-400 font-semibold'>10+ projects</span>, driving a{' '}
               <span className="text-teal-400 font-semibold">20% increase in user engagement</span> and a{' '}
               <span className="text-teal-400 font-semibold">15% boost in conversion rates</span>.
               Proficient in React, JavaScript, and CSS, I specialize in crafting scalable,
@@ -48,7 +48,7 @@ const Body = () => {
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-blue-800/30 border border-blue-700 rounded-lg p-4 hover:border-teal-400 transition-all duration-300 group"
+                  className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 hover:border-teal-400 transition-all duration-300 group"
                 >
                   <div className="text-teal-400 mb-2 group-hover:scale-110 transition-transform">
                     {stat.icon}
@@ -61,27 +61,27 @@ const Body = () => {
 
             <div className="flex flex-wrap gap-4">
               <Link to="/Resume">
-                <button className="group bg-teal-400 text-blue-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-300 transition-all shadow-lg hover:shadow-teal-400/50 flex items-center gap-2">
+                <button className="group bg-teal-400 text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-300 transition-all shadow-lg hover:shadow-teal-400/50 flex items-center gap-2">
                   View My Work
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>
               <Link to="/Contact">
-                <button className="border-2 border-teal-400 text-teal-400 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-400 hover:text-blue-900 transition-all">
+                <button className="border-2 border-teal-400 text-teal-400 px-8 py-4 rounded-lg font-bold text-lg hover:bg-teal-400 hover:text-black transition-all">
                   Get In Touch
                 </button>
               </Link>
             </div>
 
-            <div className="mt-16 pt-8 border-t border-blue-700">
+            <div className="mt-16 pt-8 border-t border-gray-800">
               <p className="text-gray-400 text-sm mb-4 font-semibold tracking-wider uppercase">
                 Tech Stack
               </p>
               <div className="flex flex-wrap gap-3">
-                {['React.js', 'JavaScript', 'TypeScript', 'Tailwind CSS', 'HTML5', 'CSS3', 'Git'].map((tech, index) => (
+                {['Vite + React.js', 'JavaScript', 'Sass', 'Tailwind CSS', 'HTML5', 'CSS3', 'Git', 'Node.js'].map((tech, index) => (
                   <span
                     key={index}
-                    className="bg-blue-800/50 text-gray-300 px-4 py-2 rounded-full text-sm border border-blue-700 hover:border-teal-400 hover:text-teal-400 transition-colors"
+                    className="bg-gray-900 text-gray-300 px-4 py-2 rounded-full text-sm border border-gray-800 hover:border-teal-400 hover:text-teal-400 transition-colors"
                   >
                     {tech}
                   </span>

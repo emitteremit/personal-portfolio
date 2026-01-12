@@ -1,7 +1,7 @@
 import React from 'react';
 import { Code2, GitBranch, Lightbulb, Palette, Database, Wrench } from 'lucide-react';
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const Skills = () => {
   const skillCategories = [
@@ -38,7 +38,7 @@ const Skills = () => {
     {
       icon: <Database size={32} />,
       title: 'Additional Skills',
-      skills: ['RESTful APIs', 'JSON', 'Component Architecture', 'State Management'],
+      skills: ['RESTful APIs', 'JSON', 'Component Architecture', 'State Management', 'CMS and Wordpress web dev'],
       color: 'teal'
     }
   ];
@@ -46,8 +46,8 @@ const Skills = () => {
   return (
     <>
       <Header/>
-    <div className="min-h-screen bg-blue-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+    <div className="min-h-screen bg-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 pt-20">
         <div className="text-center">
           <h2 className="text-5xl font-bold text-teal-400 mb-4">
             My Skills
@@ -65,7 +65,7 @@ const Skills = () => {
           {skillCategories.map((category, index) => (
             <div
               key={index}
-              className="group bg-blue-800/30 border-2 border-blue-700 rounded-xl p-6 hover:border-teal-400 transition-all duration-300 hover:shadow-xl hover:shadow-teal-400/20 hover:-translate-y-2"
+              className="group bg-gray-900/50 border-2 border-gray-800 rounded-xl p-6 hover:border-teal-400 transition-all duration-300 hover:shadow-xl hover:shadow-teal-400/20 hover:-translate-y-2"
             >
               {/* Icon and Title */}
               <div className="flex items-center gap-4 mb-6">
@@ -96,24 +96,24 @@ const Skills = () => {
 
       {/* Experience Summary */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="bg-gradient-to-r from-teal-400 to-teal-500 rounded-2xl p-12 text-center shadow-2xl">
-          <h3 className="text-3xl font-bold text-blue-900 mb-4">
+        <div className="bg-gradient-to-r from-teal-400 to-teal-500/10 rounded-2xl p-12 text-center shadow-2xl">
+          <h3 className="text-3xl font-bold text-black mb-4">
             Ready to Build Something Amazing?
           </h3>
-          <p className="text-blue-900 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-black text-lg mb-8 max-w-2xl mx-auto">
             With a strong foundation in modern web technologies and a passion for creating 
             exceptional user experiences, I'm ready to bring your ideas to life.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <div className="bg-blue-900 text-teal-400 px-8 py-4 rounded-lg font-bold">
-              <div className="text-3xl mb-1">5+</div>
+            <div className="bg-black text-teal-400 px-8 py-4 rounded-lg font-bold">
+              <div className="text-3xl mb-1">10+</div>
               <div className="text-sm">Projects Completed</div>
             </div>
-            <div className="bg-blue-900 text-teal-400 px-8 py-4 rounded-lg font-bold">
+            <div className="bg-black text-teal-400 px-8 py-4 rounded-lg font-bold">
               <div className="text-3xl mb-1">100%</div>
               <div className="text-sm">Client Satisfaction</div>
             </div>
-            <div className="bg-blue-900 text-teal-400 px-8 py-4 rounded-lg font-bold">
+            <div className="bg-black text-teal-400 px-8 py-4 rounded-lg font-bold">
               <div className="text-3xl mb-1">10+</div>
               <div className="text-sm">Technologies Mastered</div>
             </div>
@@ -122,7 +122,7 @@ const Skills = () => {
       </div>
 
       {/* Technical Proficiency Bars */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 pb-20">
         <h3 className="text-3xl font-bold text-teal-400 mb-8 text-center">
           Technical Proficiency
         </h3>
@@ -140,7 +140,7 @@ const Skills = () => {
                 <span className="font-semibold">{skill.name}</span>
                 <span>{skill.level}%</span>
               </div>
-              <div className="w-full bg-blue-800 rounded-full h-3 overflow-hidden">
+              <div className="w-full bg-gray-900 rounded-full h-3 overflow-hidden border border-gray-800">
                 <div
                   className="bg-gradient-to-r from-teal-400 to-teal-500 h-full rounded-full transition-all duration-1000 ease-out"
                   style={{ width: `${skill.level}%` }}
