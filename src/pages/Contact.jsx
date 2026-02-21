@@ -3,12 +3,38 @@ import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, Us
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
+const contactInfo = [
+  {
+    icon: <Mail size={20} />,
+    label: 'Email',
+    value: 'omodeletemitope12@gmail.com',
+    link: 'mailto:omodeletemitope12@gmail.com',
+    description: 'Professional inquiries welcome',
+  },
+  {
+    icon: <Phone size={20} />,
+    label: 'Phone',
+    value: '+234 814 433 1503',
+    link: 'tel:+2348144331503',
+    description: 'Mon–Fri, 9 AM – 6 PM WAT',
+  },
+  {
+    icon: <MapPin size={20} />,
+    label: 'Location',
+    value: 'Oyo State, Nigeria',
+    link: null,
+    description: 'Available for remote collaboration',
+  },
+];
+
+const socialLinks = [
+  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: '#', username: '@temitope', color: 'rgba(59,130,246,0.25)' },
+  { icon: <Github size={20} />, label: 'GitHub', link: 'https://github.com/emitteremit', username: '@emitteremit', color: 'rgba(139,92,246,0.25)' },
+  { icon: <Twitter size={20} />, label: 'Twitter / X', link: 'https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09', username: '@Emmiter001', color: 'rgba(14,165,233,0.25)' },
+];
+
 const Contact = () => {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -21,236 +47,193 @@ const Contact = () => {
   };
 
   const validate = () => {
-    const addError = {};
-    if (!form.name.trim()) {
-      addError.nameError = 'Name is required';
-    }
-    if (!form.email.trim()) {
-      addError.emailError = 'Email is required';
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email)) {
-      addError.emailError = 'Invalid email address';
-    }
-    if (!form.message.trim()) {
-      addError.messageError = 'Message is required';
-    }
-    return addError;
+    const errs = {};
+    if (!form.name.trim()) errs.nameError = 'Name is required';
+    if (!form.email.trim()) errs.emailError = 'Email is required';
+    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email))
+      errs.emailError = 'Invalid email address';
+    if (!form.message.trim()) errs.messageError = 'Message is required';
+    return errs;
   };
 
   const handleSubmit = () => {
     const check = validate();
-    if (Object.keys(check).length > 0) {
-      setErrors(check);
-    } else {
-      setIsSubmitting(true);
-      const subject = 'New Contact Form Submission - Portfolio';
-      const body = `Name: ${form.name}%0D%0AEmail: ${form.email}%0D%0A%0D%0AMessage:%0D%0A${form.message}`;
-      const mailtoUrl = `mailto:omodeletemitope12@gmail.com?subject=${subject}&body=${body}`;
-
-      window.open(mailtoUrl, '_self');
-
-      setTimeout(() => {
-        setForm({
-          name: '',
-          email: '',
-          message: ''
-        });
-        setErrors({});
-        setIsSubmitting(false);
-        setSubmitSuccess(true);
-        setTimeout(() => setSubmitSuccess(false), 5000);
-      }, 1000);
-    }
+    if (Object.keys(check).length > 0) { setErrors(check); return; }
+    setIsSubmitting(true);
+    const subject = 'New Contact Form Submission - Portfolio';
+    const body = `Name: ${form.name}%0D%0AEmail: ${form.email}%0D%0A%0D%0AMessage:%0D%0A${form.message}`;
+    window.open(`mailto:omodeletemitope12@gmail.com?subject=${subject}&body=${body}`, '_self');
+    setTimeout(() => {
+      setForm({ name: '', email: '', message: '' });
+      setErrors({});
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    }, 1000);
   };
-
-  const contactInfo = [
-    {
-      icon: <Mail size={22} />,
-      label: 'Email',
-      value: 'omodeletemitope12@gmail.com',
-      link: 'mailto:omodeletemitope12@gmail.com',
-      description: 'Professional inquiries welcome'
-    },
-    {
-      icon: <Phone size={22} />,
-      label: 'Phone',
-      value: '+234 814 433 1503',
-      link: 'tel:+2348144331503',
-      description: 'Mon-Fri, 9:00 AM - 6:00 PM WAT'
-    },
-    {
-      icon: <MapPin size={22} />,
-      label: 'Location',
-      value: 'Oyo State, Nigeria',
-      link: null,
-      description: 'Available for remote collaboration'
-    }
-  ];
-
-  const socialLinks = [
-    {
-      icon: <Linkedin size={22} />,
-      label: 'LinkedIn',
-      link: '#',
-      username: '@temitope',
-      color: 'hover:text-blue-400'
-    },
-    {
-      icon: <Github size={22} />,
-      label: 'GitHub',
-      link: 'https://github.com/emitteremit',
-      username: '@emitteremit',
-      color: 'hover:text-purple-400'
-    },
-    {
-      icon: <Twitter size={22} />,
-      label: 'Twitter',
-      link: 'https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09',
-      username: '@Emmiter001',
-      color: 'hover:text-sky-400'
-    }
-  ];
 
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white">
-        {/* Hero Section */}
-        <div className="relative border-b border-gray-800/50">
-          <div className="absolute inset-0 bg-gradient-to-b from-teal-500/5 to-transparent pointer-events-none"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative">
-            <div className="text-center space-y-6">
-              <div className="inline-flex items-center gap-2 bg-teal-400/10 backdrop-blur-sm border border-teal-400/30 rounded-full px-5 py-2.5">
-                <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></div>
-                <span className="text-teal-400 text-sm font-semibold tracking-wide">Available for Projects</span>
-              </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-                Let's Work{' '}
-                <span className="bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
-                  Together
-                </span>
-              </h1>
-              <p className="text-gray-400 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed font-light">
-                I'm always interested in hearing about new projects and opportunities.
-                Whether you have a question or just want to say hello, I'll do my best to get back to you.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="relative min-h-screen overflow-hidden" style={{ background: 'transparent' }}>
 
-        {/* Contact Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-            {/* Contact Information - Left Side */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="space-y-3">
-                <h2 className="text-2xl font-bold text-white">
-                  Contact Information
-                </h2>
-                <p className="text-gray-400 leading-relaxed">
-                  Feel free to reach out through any of these channels. I typically respond within 24-48 hours.
+
+
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
+
+          {/* Hero */}
+          <div className="text-center mb-16 fade-up">
+            <div
+              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-sm font-semibold mb-6"
+              style={{
+                background: 'rgba(45,212,191,0.08)',
+                border: '1px solid rgba(45,212,191,0.25)',
+                backdropFilter: 'blur(12px)',
+                color: '#2dd4bf',
+              }}
+            >
+              <span className="pulse-dot" />
+              Available for Projects
+            </div>
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+              Let's Work{' '}
+              <span className="gradient-text">Together</span>
+            </h1>
+            <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
+              I'm always interested in hearing about new projects and opportunities.
+              Whether you have a question or just want to say hello, I'll do my best to get back to you.
+            </p>
+          </div>
+
+          {/* Content grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+
+            {/* Left — Contact Info */}
+            <div className="lg:col-span-1 space-y-5 fade-up fade-up-delay-1">
+              <div>
+                <h2 className="text-xl font-bold text-white mb-2">Contact Information</h2>
+                <p className="text-sm" style={{ color: 'rgba(148,163,184,0.70)' }}>
+                  Feel free to reach out through any of these channels. I typically respond within 24–48 hours.
                 </p>
               </div>
 
-              {/* Contact Details */}
-              <div className="space-y-3">
-                {contactInfo.map((info, index) => (
-                  <div
-                    key={index}
-                    className="group bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-5 hover:border-teal-400/50 hover:bg-gray-900/70 transition-all duration-300"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="bg-gradient-to-br from-teal-400/10 to-emerald-400/10 p-3 rounded-lg text-teal-400 group-hover:from-teal-400/20 group-hover:to-emerald-400/20 transition-all">
-                        {info.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-semibold text-gray-300 mb-1">{info.label}</h3>
-                        {info.link ? (
-                          <a
-                            href={info.link}
-                            className="text-white hover:text-teal-400 transition-colors block mb-1 font-medium truncate"
-                          >
-                            {info.value}
-                          </a>
-                        ) : (
-                          <p className="text-white mb-1 font-medium">{info.value}</p>
-                        )}
-                        <p className="text-gray-500 text-xs">{info.description}</p>
-                      </div>
+              {/* Info cards */}
+              {contactInfo.map((info, i) => (
+                <div key={i} className="glass-card p-5 group">
+                  <div className="flex items-start gap-4">
+                    <div
+                      className="p-2.5 rounded-xl flex-shrink-0 transition-all duration-300 group-hover:scale-110"
+                      style={{
+                        background: 'rgba(45,212,191,0.10)',
+                        border: '1px solid rgba(45,212,191,0.20)',
+                        color: '#2dd4bf',
+                      }}
+                    >
+                      {info.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold mb-1" style={{ color: 'rgba(148,163,184,0.60)' }}>{info.label}</p>
+                      {info.link ? (
+                        <a
+                          href={info.link}
+                          className="text-sm font-semibold block mb-0.5 truncate transition-colors duration-200"
+                          style={{ color: 'rgba(241,245,249,0.90)' }}
+                          onMouseEnter={e => e.currentTarget.style.color = '#2dd4bf'}
+                          onMouseLeave={e => e.currentTarget.style.color = 'rgba(241,245,249,0.90)'}
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm font-semibold mb-0.5" style={{ color: 'rgba(241,245,249,0.90)' }}>{info.value}</p>
+                      )}
+                      <p className="text-xs" style={{ color: 'rgba(148,163,184,0.50)' }}>{info.description}</p>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
 
-              {/* Social Media */}
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-white mb-4">
-                  Connect With Me
-                </h3>
+              {/* Social */}
+              <div className="glass-card p-5">
+                <h3 className="text-base font-bold text-white mb-4">Connect With Me</h3>
                 <div className="space-y-2">
-                  {socialLinks.map((social, index) => (
+                  {socialLinks.map((s, i) => (
                     <a
-                      key={index}
-                      href={social.link}
+                      key={i}
+                      href={s.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-all group"
+                      className="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group"
+                      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = s.color;
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
+                      }}
                     >
-                      <div className={`text-gray-400 group-hover:scale-110 transition-all ${social.color}`}>
-                        {social.icon}
+                      <div style={{ color: '#2dd4bf' }}>{s.icon}</div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-white">{s.label}</p>
+                        <p className="text-xs" style={{ color: 'rgba(148,163,184,0.55)' }}>{s.username}</p>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white font-medium text-sm">{social.label}</p>
-                        <p className="text-gray-500 text-xs truncate">{social.username}</p>
-                      </div>
-                      <Send size={14} className="text-gray-600 group-hover:text-teal-400 transition-colors flex-shrink-0" />
+                      <Send size={13} style={{ color: 'rgba(148,163,184,0.40)' }} className="group-hover:text-teal-400 transition-colors" />
                     </a>
                   ))}
                 </div>
               </div>
 
-              {/* Response Time Info */}
-              <div className="bg-gradient-to-br from-teal-400/5 to-emerald-400/5 border border-teal-400/20 rounded-xl p-5">
-                <div className="flex items-start gap-3">
-                  <CheckCircle size={20} className="text-teal-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-white font-medium text-sm mb-1">Quick Response Time</p>
-                    <p className="text-gray-400 text-xs leading-relaxed">
-                      I aim to respond to all inquiries within 24-48 hours during business days.
-                    </p>
-                  </div>
+              {/* Response time */}
+              <div
+                className="p-4 rounded-xl flex items-start gap-3"
+                style={{
+                  background: 'rgba(45,212,191,0.05)',
+                  border: '1px solid rgba(45,212,191,0.18)',
+                }}
+              >
+                <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <p className="text-sm font-semibold text-white mb-1">Quick Response Time</p>
+                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(148,163,184,0.65)' }}>
+                    I aim to respond to all inquiries within 24–48 hours during business days.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Contact Form - Right Side */}
-            <div className="lg:col-span-2">
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-8 lg:p-10">
-                <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-white mb-3">
-                    Send a Message
-                  </h2>
-                  <p className="text-gray-400">
-                    Fill out the form below and I'll get back to you as soon as possible.
-                  </p>
-                </div>
+            {/* Right — Form */}
+            <div className="lg:col-span-2 fade-up fade-up-delay-2">
+              <div className="glass-card p-8 lg:p-10">
+                <h2 className="text-2xl font-bold text-white mb-2">Send a Message</h2>
+                <p className="text-sm mb-8" style={{ color: 'rgba(148,163,184,0.70)' }}>
+                  Fill out the form below and I'll get back to you as soon as possible.
+                </p>
 
                 {submitSuccess && (
-                  <div className="mb-6 bg-teal-400/10 border border-teal-400/30 rounded-xl p-4 flex items-center gap-3">
-                    <CheckCircle size={20} className="text-teal-400 flex-shrink-0" />
-                    <p className="text-teal-400 text-sm font-medium">
-                      Message sent successfully! I'll get back to you soon.
+                  <div
+                    className="mb-6 flex items-center gap-3 p-4 rounded-xl"
+                    style={{
+                      background: 'rgba(45,212,191,0.10)',
+                      border: '1px solid rgba(45,212,191,0.30)',
+                    }}
+                  >
+                    <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0 }} />
+                    <p className="text-sm font-medium" style={{ color: '#2dd4bf' }}>
+                      Message sent! I'll get back to you soon.
                     </p>
                   </div>
                 )}
 
                 <div className="space-y-6">
-                  {/* Name Field */}
+                  {/* Name */}
                   <div>
-                    <label htmlFor="name" className="block text-gray-300 font-medium mb-2.5 text-sm">
-                      Full Name <span className="text-teal-400">*</span>
+                    <label htmlFor="name" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
+                      Full Name <span style={{ color: '#2dd4bf' }}>*</span>
                     </label>
                     <div className="relative">
-                      <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                      <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.40)' }} />
                       <input
                         type="text"
                         id="name"
@@ -258,25 +241,26 @@ const Contact = () => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="John Doe"
-                        className={`w-full pl-11 pr-4 py-3.5 bg-gray-950/50 border ${
-                          errors.nameError ? 'border-red-500/50 focus:border-red-500' : 'border-gray-800/50 focus:border-teal-400/50'
-                        } rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition-all`}
+                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
+                        style={{
+                          borderColor: errors.nameError ? 'rgba(239,68,68,0.50)' : undefined,
+                        }}
                       />
                     </div>
                     {errors.nameError && (
-                      <p className="text-red-400 text-xs mt-2 flex items-center gap-1.5">
-                        <span className="text-sm">⚠</span> {errors.nameError}
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
+                        ⚠ {errors.nameError}
                       </p>
                     )}
                   </div>
 
-                  {/* Email Field */}
+                  {/* Email */}
                   <div>
-                    <label htmlFor="email" className="block text-gray-300 font-medium mb-2.5 text-sm">
-                      Email Address <span className="text-teal-400">*</span>
+                    <label htmlFor="email" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
+                      Email Address <span style={{ color: '#2dd4bf' }}>*</span>
                     </label>
                     <div className="relative">
-                      <AtSign size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                      <AtSign size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.40)' }} />
                       <input
                         type="email"
                         id="email"
@@ -284,25 +268,26 @@ const Contact = () => {
                         value={form.email}
                         onChange={handleChange}
                         placeholder="john@example.com"
-                        className={`w-full pl-11 pr-4 py-3.5 bg-gray-950/50 border ${
-                          errors.emailError ? 'border-red-500/50 focus:border-red-500' : 'border-gray-800/50 focus:border-teal-400/50'
-                        } rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition-all`}
+                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
+                        style={{
+                          borderColor: errors.emailError ? 'rgba(239,68,68,0.50)' : undefined,
+                        }}
                       />
                     </div>
                     {errors.emailError && (
-                      <p className="text-red-400 text-xs mt-2 flex items-center gap-1.5">
-                        <span className="text-sm">⚠</span> {errors.emailError}
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
+                        ⚠ {errors.emailError}
                       </p>
                     )}
                   </div>
 
-                  {/* Message Field */}
+                  {/* Message */}
                   <div>
-                    <label htmlFor="message" className="block text-gray-300 font-medium mb-2.5 text-sm">
-                      Message <span className="text-teal-400">*</span>
+                    <label htmlFor="message" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
+                      Message <span style={{ color: '#2dd4bf' }}>*</span>
                     </label>
                     <div className="relative">
-                      <MessageSquare size={18} className="absolute left-4 top-4 text-gray-500" />
+                      <MessageSquare size={16} className="absolute left-4 top-4" style={{ color: 'rgba(148,163,184,0.40)' }} />
                       <textarea
                         id="message"
                         name="message"
@@ -310,60 +295,66 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="Tell me about your project, timeline, and budget..."
                         rows={6}
-                        className={`w-full pl-11 pr-4 py-3.5 bg-gray-950/50 border ${
-                          errors.messageError ? 'border-red-500/50 focus:border-red-500' : 'border-gray-800/50 focus:border-teal-400/50'
-                        } rounded-xl text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-teal-400/20 transition-all resize-none`}
-                      ></textarea>
+                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm resize-none"
+                        style={{
+                          borderColor: errors.messageError ? 'rgba(239,68,68,0.50)' : undefined,
+                        }}
+                      />
                     </div>
                     {errors.messageError && (
-                      <p className="text-red-400 text-xs mt-2 flex items-center gap-1.5">
-                        <span className="text-sm">⚠</span> {errors.messageError}
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
+                        ⚠ {errors.messageError}
                       </p>
                     )}
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit */}
                   <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-teal-400 to-emerald-400 text-black font-semibold py-4 px-6 rounded-xl hover:from-teal-300 hover:to-emerald-300 transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-teal-400/20 hover:shadow-teal-400/40 hover:scale-[1.02] active:scale-[0.98]"
+                    className="btn-glass-primary w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl text-base font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
-                        <span>Sending Message...</span>
+                        <div
+                          className="w-5 h-5 rounded-full border-2 border-black/30 border-t-black animate-spin"
+                        />
+                        Sending…
                       </>
                     ) : (
                       <>
-                        <span>Send Message</span>
-                        <Send size={18} />
+                        Send Message <Send size={18} />
                       </>
                     )}
                   </button>
 
-                  <p className="text-gray-500 text-xs text-center mt-4">
+                  <p className="text-xs text-center" style={{ color: 'rgba(148,163,184,0.40)' }}>
                     By submitting this form, you agree to be contacted regarding your inquiry.
                   </p>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom CTA */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-          <div className="relative overflow-hidden bg-gradient-to-br from-teal-400/10 via-emerald-400/10 to-teal-400/10 backdrop-blur-sm border border-teal-400/20 rounded-2xl p-12 text-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-teal-400/5 to-emerald-400/5 pointer-events-none"></div>
-            <div className="relative">
-              <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-                Ready to Start Your Project?
-              </h3>
-              <p className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
-                Let's discuss your ideas and turn them into reality. I'm here to help
-                you create exceptional digital experiences.
-              </p>
-            </div>
+          {/* Bottom CTA */}
+          <div
+            className="mt-16 rounded-2xl p-10 text-center fade-up"
+            style={{
+              background: 'linear-gradient(135deg, rgba(45,212,191,0.08), rgba(129,140,248,0.08))',
+              border: '1px solid rgba(45,212,191,0.18)',
+              backdropFilter: 'blur(20px)',
+              animationDelay: '0.3s',
+            }}
+          >
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+              Ready to Start Your <span className="gradient-text">Project?</span>
+            </h3>
+            <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.75)' }}>
+              Let's discuss your ideas and turn them into reality. I'm here to help you create
+              exceptional digital experiences.
+            </p>
           </div>
+
         </div>
         <Footer />
       </div>
