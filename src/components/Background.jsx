@@ -27,20 +27,44 @@ const Background = () => (
     >
         {/* ── Ambient Orbs ─────────────────────────────── */}
         <div
-            className="orb orb-teal"
-            style={{ width: '650px', height: '650px', top: '-12%', right: '-6%', opacity: 0.75 }}
+            className="orb orb-teal orb-float"
+            style={{
+                width: '650px',
+                height: '650px',
+                top: '-12%',
+                right: '-6%',
+                opacity: 0.75,
+                animationDelay: '0s',
+                animationDuration: '28s'
+            }}
         />
         <div
-            className="orb orb-purple"
-            style={{ width: '550px', height: '550px', bottom: '-8%', left: '-9%', opacity: 0.65 }}
+            className="orb orb-purple orb-float"
+            style={{
+                width: '550px',
+                height: '550px',
+                bottom: '-8%',
+                left: '-9%',
+                opacity: 0.65,
+                animationDelay: '-5s',
+                animationDuration: '32s'
+            }}
         />
         <div
-            className="orb orb-blue"
-            style={{ width: '400px', height: '400px', top: '38%', left: '42%', opacity: 0.45 }}
+            className="orb orb-blue orb-float"
+            style={{
+                width: '400px',
+                height: '400px',
+                top: '38%',
+                left: '42%',
+                opacity: 0.45,
+                animationDelay: '-12s',
+                animationDuration: '24s'
+            }}
         />
 
         {/* ── Floating Particles ───────────────────────── */}
-        {PARTICLES.map(p => (
+        {PARTICLES.map((p, i) => (
             <span
                 key={p.id}
                 className="particle"
@@ -51,6 +75,8 @@ const Background = () => (
                     height: p.size,
                     opacity: p.opacity,
                     background: p.color,
+                    animationDelay: `${-(i * 0.7)}s`,
+                    animationDuration: `${12 + (i % 7)}s`
                 }}
             />
         ))}
