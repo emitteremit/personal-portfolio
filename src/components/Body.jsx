@@ -124,9 +124,11 @@ const Body = () => {
             >
               Tech Stack
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className=" flex  flex-wrap lg:justify-start justify-center gap-3">
               {techStack.map((tech, i) => (
-                <span key={i} className="glass-chip">{tech}</span>
+                <div className='gap-3'>
+                  <span key={i} className="glass-chip ">{tech}</span>
+                </div>
               ))}
             </div>
           </div>

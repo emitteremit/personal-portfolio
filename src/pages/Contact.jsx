@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, User, AtSign, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, User, AtSign, CheckCircle,Instagram } from 'lucide-react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 
@@ -28,9 +28,10 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: '#', username: '@temitope', color: 'rgba(59,130,246,0.25)' },
+  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: 'www.linkedin.com/in/temitope-omodele-07b977404', username: '@Temitope', color: 'rgba(59,130,246,0.25)' },
   { icon: <Github size={20} />, label: 'GitHub', link: 'https://github.com/emitteremit', username: '@emitteremit', color: 'rgba(139,92,246,0.25)' },
   { icon: <Twitter size={20} />, label: 'Twitter / X', link: 'https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09', username: '@Emmiter001', color: 'rgba(14,165,233,0.25)' },
+  { icon: <Instagram size={20} />, label: 'Instagram', link: 'https://www.instagram.com/emit2113/', username: 'Emit2113', color: 'rgba(233, 138, 14, 0.25)' },
 ];
 
 const Contact = () => {
