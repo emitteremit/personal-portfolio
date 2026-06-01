@@ -6,12 +6,31 @@ import img2 from '../assets/imgl2.png';
 import img3 from '../assets/imgl3.png';
 import img4 from '../assets/imgl4.png';
 import img5 from '../assets/des.png';
+import img6 from '../assets/ecommerce.png'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const projects = [
   {
-    id: 1,
+    id:1,
+    title:'QUNEX Fashiion E-commerce website',
+    description:'a modern fashion ecommerce storefront with a fully custom-designed UI, featuring product listings, Shopping Cart, functionality, and a smooth, responsive shopping experience built with reactjs and styled for premium fashion brand feel ',
+    technologies:['Reactjs','tailwindcss'],
+    role:'front-end Developer',
+    link:'https://ecommerce-fi93.vercel.app/',
+    image:img6,
+  },
+  {
+    id:2,
+    title:"ibadan north diocese-church website",
+    description:"i developed a full stack web church web admin panel with a a fully custom-designed frontend, featuring secure admin authentication, a dynamic dashboard, and a complete CRUD functionality for managing church events and news. built with react(typescript), Node.js and mongodb",
+    technologies:['Typescript','Tailwindcss','Node.js','Mongodb'],
+    role:"full-stack developer",
+    link:"ibadannorth.vercel.app",
+    // image:
+  },
+  {
+    id: 3,
     title: 'Interior Design Services Website',
     description: 'Developed a responsive interior design website using modern web technologies, showcasing stunning portfolio showcases and services. The website features detailed service descriptions, a contact form, and a seamless navigation experience, providing an immersive experience for potential clients.',
     technologies: ['HTML', 'Tailwind CSS', 'Javascript'],
@@ -20,7 +39,7 @@ const projects = [
     image: img3,
   },
   {
-    id: 2,
+    id: 4,
     title: 'Real Estate Website',
     description: 'Developed a responsive real estate website using React and Tailwind CSS, showcasing luxurious homes and properties. The website features property listings, detailed descriptions, and a contact form, providing an immersive experience for potential buyers and renters.',
     technologies: ['React', 'Tailwind CSS'],
@@ -29,7 +48,7 @@ const projects = [
     image: img2,
   },
   {
-    id: 3,
+    id: 5,
     title: 'Apartment Website',
     description: 'Developed a responsive apartment landing page using HTML, Bootstrap, and AOS animation, showcasing luxurious living spaces and amenities. The website features floor plans, services, and a contact form, providing an immersive experience for potential residents.',
     technologies: ['HTML', 'CSS', 'Bootstrap'],
@@ -38,7 +57,7 @@ const projects = [
     image: img1,
   },
   {
-    id: 4,
+    id: 6,
     title: 'Sensible Solutions — Interior Design Portfolio',
     description: 'Developed a responsive portfolio website for Sensible Solutions, showcasing stunning interior design projects and client testimonials. The website features a clean design, intuitive navigation, and a contact form, providing an immersive experience for potential clients.',
     technologies: ['React', 'Tailwind CSS'],
@@ -47,7 +66,7 @@ const projects = [
     image: img4,
   },
   {
-    id: 5,
+    id: 7,
     title: 'Construction Concepts — Commercial Design & Build',
     description: 'Developed a responsive website for Construction Concepts, showcasing their commercial design and build services, including turnkey construction, construction management, architectural design, and permit expediting.',
     technologies: ['React', 'Tailwind CSS'],

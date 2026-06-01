@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { Code2, GitBranch, Lightbulb, Palette, Database, Wrench } from 'lucide-react';
+import { Code2, GitBranch, Lightbulb, Palette, Database, Wrench, Server, Layers } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const skillCategories = [
   {
     icon: <Code2 size={28} />,
-    title: 'Languages & Frameworks',
-    skills: ['HTML5', 'CSS3', 'JavaScript', 'React.js', 'SASS', 'Bootstrap', 'Tailwind CSS', 'Next.js'],
+    title: 'Frontend',
+    skills: ['HTML5', 'CSS3', 'JavaScript', 'React.js', 'Next.js', 'Vite'],
     glow: 'rgba(45,212,191,0.20)',
   },
   {
-    icon: <GitBranch size={28} />,
-    title: 'Version Control',
-    skills: ['Git', 'GitHub', 'Collaboration', 'Code Review'],
-    glow: 'rgba(139,92,246,0.20)',
-  },
-  {
     icon: <Palette size={28} />,
-    title: 'Design & UI/UX',
-    skills: ['Responsive Web Design', 'Cross-browser Compatibility', 'Web Accessibility', 'Modern UI Design'],
+    title: 'Styling & UI',
+    skills: ['Tailwind CSS', 'Bootstrap', 'SASS', 'Responsive Design', 'Web Accessibility', 'Modern UI Design'],
     glow: 'rgba(236,72,153,0.18)',
   },
   {
-    icon: <Wrench size={28} />,
-    title: 'Development Tools',
-    skills: ['VS Code', 'Chrome DevTools', 'Testing & Debugging', 'Performance Optimization'],
-    glow: 'rgba(59,130,246,0.20)',
+    icon: <Server size={28} />,
+    title: 'Backend',
+    skills: ['Node.js', 'Express.js', 'NestJS', 'RESTful APIs', 'Authentication & JWT', 'Middleware'],
+    glow: 'rgba(251,146,60,0.20)',
+  },
+  {
+    icon: <Database size={28} />,
+    title: 'Database',
+    skills: ['MongoDB', 'Mongoose ODM', 'JSON', 'Data Modelling', 'CRUD Operations', 'Aggregation Pipelines'],
+    glow: 'rgba(16,185,129,0.20)',
+  },
+  {
+    icon: <GitBranch size={28} />,
+    title: 'Version Control & Tools',
+    skills: ['Git', 'GitHub', 'VS Code', 'Postman', 'Chrome DevTools', 'Code Review'],
+    glow: 'rgba(139,92,246,0.20)',
   },
   {
     icon: <Lightbulb size={28} />,
@@ -34,20 +40,16 @@ const skillCategories = [
     skills: ['Problem Solving', 'Team Collaboration', 'Agile Methodologies', 'Communication'],
     glow: 'rgba(251,191,36,0.18)',
   },
-  {
-    icon: <Database size={28} />,
-    title: 'Additional Skills',
-    skills: ['RESTful APIs', 'JSON', 'Component Architecture', 'State Management', 'CMS & WordPress'],
-    glow: 'rgba(16,185,129,0.20)',
-  },
 ];
 
 const proficiencies = [
   { name: 'HTML / CSS', level: 95 },
   { name: 'JavaScript', level: 90 },
-  { name: 'React.js', level: 88 },
+  { name: 'React.js / Next.js', level: 88 },
   { name: 'Tailwind CSS', level: 92 },
-  { name: 'Responsive Design', level: 95 },
+  { name: 'Node.js / Express.js', level: 85 },
+  { name: 'MongoDB', level: 82 },
+  { name: 'NestJS', level: 68 },
   { name: 'Git / GitHub', level: 85 },
 ];
 
@@ -65,10 +67,6 @@ const Skills = () => {
     <>
       <Header />
       <div className="relative min-h-screen overflow-hidden" style={{ background: 'transparent' }}>
-
-
-
-
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
 
           {/* Header */}
@@ -83,18 +81,40 @@ const Skills = () => {
               }}
             >
               <span className="pulse-dot" />
-              Technical Expertise
+              Full-Stack Expertise
             </div>
             <h1 className="text-5xl sm:text-6xl font-bold mb-4">
               My <span className="gradient-text">Skills</span>
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.80)' }}>
-              A comprehensive overview of my technical expertise and professional capabilities
+              From pixel-perfect frontends to scalable backend systems a full-stack developer ready to build end-to-end solutions
             </p>
             <div
               className="mt-6 h-1 w-20 mx-auto rounded-full"
               style={{ background: 'linear-gradient(90deg, #2dd4bf, #818cf8)' }}
             />
+          </div>
+
+          {/* Full-Stack Banner */}
+          <div
+            className="flex flex-wrap justify-center gap-4 mb-14 fade-up"
+            style={{ animationDelay: '0.1s' }}
+          >
+            {[
+              { label: 'Frontend', color: '#2dd4bf' },
+              { label: '→', color: 'rgba(148,163,184,0.50)' },
+              { label: 'Backend', color: '#f97316' },
+              { label: '→', color: 'rgba(148,163,184,0.50)' },
+              { label: 'Database', color: '#10b981' },
+            ].map((item, i) => (
+              <span
+                key={i}
+                className="text-lg font-bold tracking-wide"
+                style={{ color: item.color }}
+              >
+                {item.label}
+              </span>
+            ))}
           </div>
 
           {/* Skills Grid */}
@@ -123,7 +143,11 @@ const Skills = () => {
                 {/* Skills list */}
                 <ul className="space-y-2.5">
                   {cat.skills.map((skill, j) => (
-                    <li key={j} className="flex items-center gap-3 transition-colors duration-200 group-hover:text-white" style={{ color: 'rgba(203,213,225,0.85)' }}>
+                    <li
+                      key={j}
+                      className="flex items-center gap-3 transition-colors duration-200 group-hover:text-white"
+                      style={{ color: 'rgba(203,213,225,0.85)' }}
+                    >
                       <div
                         className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                         style={{ background: '#2dd4bf', boxShadow: '0 0 6px rgba(45,212,191,0.60)' }}
@@ -182,7 +206,8 @@ const Skills = () => {
               {[
                 { value: '5+', label: 'Projects Completed' },
                 { value: '100%', label: 'Client Satisfaction' },
-                { value: '10+', label: 'Technologies Mastered' },
+                { value: '15+', label: 'Technologies Mastered' },
+                { value: 'Full', label: 'Stack Developer' },
               ].map((stat, i) => (
                 <div
                   key={i}

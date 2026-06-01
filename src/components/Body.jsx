@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 const Body = () => {
   const stats = [
     { icon: <Code size={22} />, value: '3+', label: 'Years Experience' },
-    { icon: <Sparkles size={22} />, value: '10+', label: 'Projects Delivered' },
-    { icon: <TrendingUp size={22} />, value: '20%', label: 'User Engagement' },
+    { icon: <Sparkles size={22} />, value: '12+', label: 'Projects Delivered' },
+    { icon: <TrendingUp size={22} />, value: '25%', label: 'Client Satisfaction' },
   ];
 
-  const techStack = ['Vite + React.js', 'JavaScript', 'Sass', 'Tailwind CSS', 'HTML5', 'CSS3', 'Git', 'Node.js', 'Next.js'];
+  const techStack = ['React.js', 'Next.js', 'Vite', 'Tailwind CSS', 'Node.js', 'Express.js', 'MongoDB', 'NestJS', 'JavaScript', 'TypeScript'];
 
   return (
     <main className="relative min-h-screen flex items-center overflow-hidden" style={{ background: 'transparent' }}>
@@ -48,35 +48,34 @@ const Body = () => {
             <span style={{ color: '#2dd4bf' }}>.</span>
           </h1>
 
-          {/* Tagline */}
+          {/* Tagline - UPDATED */}
           <h2
             className="fade-up fade-up-delay-3 text-2xl sm:text-3xl lg:text-4xl font-semibold mb-6 leading-snug"
             style={{ color: 'rgba(241,245,249,0.85)' }}
           >
-            I drive digital growth through{' '}
+            I build complete{' '}
             <span className="relative" style={{ color: '#2dd4bf' }}>
-              innovative
+              full-stack
               <span
                 className="absolute bottom-0 left-0 w-full h-0.5 rounded-full"
                 style={{ background: 'rgba(45,212,191,0.35)' }}
               />
             </span>{' '}
-            front-end solutions.
+            web solutions from frontend to backend.
           </h2>
 
-          {/* Description */}
+          {/* Description - UPDATED */}
           <p
             className="fade-up fade-up-delay-4 text-lg leading-relaxed max-w-2xl mb-10"
             style={{ color: 'rgba(148,163,184,0.85)' }}
           >
-            As a results-driven front-end developer with 3+ years of experience, I have
+            As a fullstack web developer with 3+ years of experience, I have
             successfully delivered over{' '}
-            <span style={{ color: '#2dd4bf', fontWeight: 600 }}>10+ projects</span>, driving a{' '}
-            <span style={{ color: '#2dd4bf', fontWeight: 600 }}>20% increase in user engagement</span>{' '}
-            and a{' '}
-            <span style={{ color: '#2dd4bf', fontWeight: 600 }}>15% boost in conversion rates</span>.
-            Proficient in React, JavaScript, and CSS, I specialize in crafting scalable,
-            user-centric web applications that exceed expectations.
+            <span style={{ color: '#2dd4bf', fontWeight: 600 }}>12+ complete projects</span>, from concept to deployment. 
+            Proficient in React, Node.js, MongoDB, and modern web technologies, I specialize in building 
+            <span style={{ color: '#2dd4bf', fontWeight: 600 }}> scalable, end-to-end applications</span> that 
+            drive <span style={{ color: '#2dd4bf', fontWeight: 600 }}>real business results</span>.
+            I focus on clean code, optimal performance, and seamless user experiences.
           </p>
 
           {/* Stats */}
@@ -110,7 +109,7 @@ const Body = () => {
             </Link>
           </div>
 
-          {/* Tech Stack */}
+          {/* Tech Stack - UPDATED */}
           <div
             className="fade-up pt-8"
             style={{
@@ -126,8 +125,8 @@ const Body = () => {
             </p>
             <div className=" flex  flex-wrap lg:justify-start justify-center gap-3">
               {techStack.map((tech, i) => (
-                <div className='gap-3'>
-                  <span key={i} className="glass-chip ">{tech}</span>
+                <div className='gap-3' key={i}>
+                  <span className="glass-chip ">{tech}</span>
                 </div>
               ))}
             </div>
