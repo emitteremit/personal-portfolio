@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, User, AtSign, CheckCircle,Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, User, AtSign, CheckCircle, Instagram } from 'lucide-react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { MessageCircle } from 'lucide-react';
 
 const contactInfo = [
   {
@@ -25,10 +26,17 @@ const contactInfo = [
     link: null,
     description: 'Available for remote collaboration',
   },
+  {
+    icon: <MessageCircle size={20} />,
+    label: 'WhatsApp',
+    value: '+234 814 433 1503',
+    link: 'https://wa.me/2348144331503',
+    description: 'Fastest way to reach me',
+  },
 ];
 
 const socialLinks = [
-  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: 'www.linkedin.com/in/temitope-omodele-07b977404', username: '@Temitope', color: 'rgba(59,130,246,0.25)' },
+  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: 'https://www.linkedin.com/in/temitope-omodele-07b977404', username: '@Temitope', color: 'rgba(59,130,246,0.25)' },
   { icon: <Github size={20} />, label: 'GitHub', link: 'https://github.com/emitteremit', username: '@emitteremit', color: 'rgba(139,92,246,0.25)' },
   { icon: <Twitter size={20} />, label: 'Twitter / X', link: 'https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09', username: '@Emmiter001', color: 'rgba(14,165,233,0.25)' },
   { icon: <Instagram size={20} />, label: 'Instagram', link: 'https://www.instagram.com/emit2113/', username: 'Emit2113', color: 'rgba(233, 138, 14, 0.25)' },
@@ -98,15 +106,32 @@ const Contact = () => {
               Available for Projects
             </div>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-              Let's Work{' '}
-              <span className="gradient-text">Together</span>
+              Start Your Next Project
             </h1>
             <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
-              I'm always interested in hearing about new projects and opportunities.
-              Whether you have a question or just want to say hello, I'll do my best to get back to you.
+              Looking for a modern website, admin dashboard,
+              healthcare platform, booking system or custom web application?
+              Let's discuss your ideas and bring them to life.
             </p>
           </div>
 
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+            {[
+              'Business Websites',
+              'Admin Dashboards',
+              'E-Commerce',
+              'Full-Stack Apps'
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="glass-card p-4 text-center"
+              >
+                <span className="font-semibold">
+                  {item}
+                </span>
+              </div>
+            ))}
+          </div>
           {/* Content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
@@ -281,6 +306,37 @@ const Contact = () => {
                       </p>
                     )}
                   </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2.5">
+                      Project Budget
+                    </label>
+
+                    <select
+                      name="budget"
+                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm bg-azure-900/30 text-black"
+                    >
+                      <option className='text-black'>₦200,000 - ₦500,000</option>      
+                      <option className='text-black'>Less than ₦200,000</option>
+                      <option className='text-black'>₦500,000 - ₦1,000,000</option>
+                      <option className='text-black'>₦1,000,000+</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold mb-2.5">
+                      Project Type
+                    </label>
+
+                    <select
+                      name="projectType"
+                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
+                    >
+                      <option className='text-black'>Business Website</option>
+                      <option className='text-black'>E-Commerce</option>
+                      <option className='text-black'>Admin Dashboard</option>
+                      <option className='text-black'>Portfolio Website</option>
+                      <option className='text-black'>Custom Web App</option>
+                    </select>
+                  </div>
 
                   {/* Message */}
                   <div>
@@ -348,12 +404,28 @@ const Contact = () => {
             }}
           >
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-              Ready to Start Your <span className="gradient-text">Project?</span>
-            </h3>
+              Need a Website That Helps Your Business Grow?            </h3>
             <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.75)' }}>
-              Let's discuss your ideas and turn them into reality. I'm here to help you create
-              exceptional digital experiences.
+              Let's discuss your goals and create a modern,
+              high-performing digital experience tailored to your needs.
             </p>
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              <a
+                href="https://wa.me/2348144331503"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-glass-primary px-8 py-4 rounded-xl font-bold"
+              >
+                WhatsApp Me
+              </a>
+
+              <a
+                href="mailto:omodeletemitope12@gmail.com"
+                className="glass-card px-8 py-4 rounded-xl font-bold"
+              >
+                Send Email
+              </a>
+            </div>
           </div>
 
         </div>

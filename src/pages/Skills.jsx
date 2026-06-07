@@ -13,7 +13,7 @@ const skillCategories = [
   {
     icon: <Palette size={28} />,
     title: 'Styling & UI',
-    skills: ['Tailwind CSS', 'Bootstrap', 'SASS', 'Responsive Design', 'Web Accessibility', 'Modern UI Design'],
+    skills: ['Tailwind CSS', 'Bootstrap', 'Responsive Design', 'Web Accessibility', 'Modern UI Design'],
     glow: 'rgba(236,72,153,0.18)',
   },
   {
@@ -71,23 +71,15 @@ const Skills = () => {
 
           {/* Header */}
           <div className="text-center mb-16 fade-up">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6"
-              style={{
-                background: 'rgba(45,212,191,0.08)',
-                border: '1px solid rgba(45,212,191,0.25)',
-                backdropFilter: 'blur(12px)',
-                color: '#2dd4bf',
-              }}
-            >
-              <span className="pulse-dot" />
-              Full-Stack Expertise
-            </div>
             <h1 className="text-5xl sm:text-6xl font-bold mb-4">
-              My <span className="gradient-text">Skills</span>
+              Technical <span className="gradient-text">Skills</span>
+              <br />
+              & Full-Stack Expertise
             </h1>
-            <p className="text-lg max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.80)' }}>
-              From pixel-perfect frontends to scalable backend systems a full-stack developer ready to build end-to-end solutions
+            <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
+              Building modern, scalable and responsive web applications
+              using industry-standard technologies across the full stack,
+              from intuitive user interfaces to powerful backend systems.
             </p>
             <div
               className="mt-6 h-1 w-20 mx-auto rounded-full"
@@ -160,6 +152,34 @@ const Skills = () => {
             ))}
           </div>
 
+          <div className="mb-20 fade-up">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold">
+                What I Can <span className="gradient-text">Build</span>
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                'Business Websites',
+                'Admin Dashboards',
+                'Healthcare Platforms',
+                'E-Commerce Stores',
+                'Portfolio Websites',
+                'Booking Systems'
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="glass-card p-5 text-center"
+                >
+                  <span className="font-semibold">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Proficiency Bars */}
           <div
             className="glass-card p-8 mb-16 fade-up"
@@ -189,6 +209,36 @@ const Skills = () => {
             </div>
           </div>
 
+          <div
+            className="glass-card p-8 mb-16 fade-up"
+            style={{ animationDelay: '0.55s' }}
+          >
+            <h3 className="text-2xl font-bold text-center mb-8">
+              Currently <span className="gradient-text">Learning</span>
+            </h3>
+
+            <div className="flex flex-wrap justify-center gap-3">
+              {[
+                'Advanced NestJS',
+                'TypeScript',
+                'Docker',
+                'System Design'
+              ].map((item, i) => (
+                <span
+                  key={i}
+                  className="px-4 py-2 rounded-full text-sm font-medium"
+                  style={{
+                    background: 'rgba(45,212,191,0.08)',
+                    border: '1px solid rgba(45,212,191,0.20)',
+                    color: '#2dd4bf'
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
           {/* Stats Banner */}
           <div
             className="rounded-2xl p-10 text-center fade-up"
@@ -200,14 +250,23 @@ const Skills = () => {
             }}
           >
             <h3 className="text-2xl font-bold mb-8">
-              Ready to Build Something <span className="gradient-text">Amazing?</span>
+              Let's Build Your Next Project
             </h3>
+            <p
+              className="max-w-2xl mx-auto mb-8"
+              style={{ color: 'rgba(148,163,184,0.75)' }}
+            >
+              Whether you need a business website,
+              dashboard, booking platform or complete
+              full-stack solution, I'm ready to help
+              bring your ideas to life.
+            </p>
             <div className="flex flex-wrap justify-center gap-6">
               {[
-                { value: '5+', label: 'Projects Completed' },
+                { value: '10+', label: 'Projects Completed' },
                 { value: '100%', label: 'Client Satisfaction' },
-                { value: '15+', label: 'Technologies Mastered' },
-                { value: 'Full', label: 'Stack Developer' },
+                { value: '15+', label: 'Technological Skills' },
+                { value: 'End-To-End', label: 'Development' },
               ].map((stat, i) => (
                 <div
                   key={i}
@@ -219,12 +278,30 @@ const Skills = () => {
                 >
                   <div className="text-3xl font-bold gradient-text mb-1">{stat.value}</div>
                   <div className="text-sm" style={{ color: 'rgba(148,163,184,0.70)' }}>{stat.label}</div>
+                  
                 </div>
+                
               ))}
+              <div className="flex flex-wrap justify-center gap-4 mb-10">
+  <a
+    href="/contact"
+    className="btn-glass-primary px-8 py-3 rounded-xl font-bold"
+  >
+    Contact Me
+  </a>
+
+  <a
+    href="/resume"
+    className="glass-card px-8 py-3 rounded-xl font-bold"
+  >
+    View Projects
+  </a>
+</div>
             </div>
           </div>
 
         </div>
+        
         <Footer />
       </div>
     </>

@@ -37,7 +37,7 @@ const experiences = [
     title: 'Front-end Development Intern',
     company: 'Valuemax',
     type: 'Internship',
-    period: 'Jan 2024 – Dec 2025',
+    period: 'Jan 2025 – Dec 2025',
     duration: '1 Year',
     location: 'Nigeria',
     status: 'Completed',
@@ -100,12 +100,13 @@ const Experience = () => {
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-5 leading-tight">
-              Work <span className="gradient-text">Experience</span>
-            </h1>
+              Professional Experience
+              & Career Journey            </h1>
 
             <p className="text-lg max-w-xl mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
-              3+ years building modern web applications and delivering exceptional digital experiences.
-            </p>
+              Building scalable web applications, helping businesses
+              establish a strong online presence and deliver better
+              digital experiences.            </p>
           </div>
 
           {/* ── Stats Row ──────────────────────────────────────── */}
@@ -124,6 +125,21 @@ const Experience = () => {
                 </div>
                 <div className="text-3xl font-bold gradient-text">{s.value}</div>
                 <div className="text-xs font-medium" style={{ color: 'rgba(148,163,184,0.70)' }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+
+
+          <div className="grid md:grid-cols-3 gap-6 mb-20">
+            {[
+              "10+ Projects Delivered",
+              "100% Client Satisfaction",
+              "Remote & On-Site Experience"
+            ].map((item, i) => (
+              <div key={i} className="glass-card p-6 text-center">
+                <h3 className="font-semibold text-white">
+                  {item}
+                </h3>
               </div>
             ))}
           </div>
@@ -317,10 +333,11 @@ const Experience = () => {
                 <Users size={26} style={{ color: '#2dd4bf' }} />
               </div>
             </div>
-            <h3 className="text-3xl font-bold text-white mb-3">Let's Work Together</h3>
+            <h3 className="text-3xl font-bold text-white mb-3">Ready To Build Something Amazing?</h3>
             <p className="mb-8 text-base max-w-md mx-auto" style={{ color: 'rgba(148,163,184,0.75)' }}>
-              Interested in collaborating or learning more about my experience? I'd love to hear from you.
-            </p>
+              Whether you need a business website,
+              dashboard, admin panel or full-stack application,
+              I'm ready to help bring your idea to life.            </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/Contact">
                 <button className="btn-glass-primary inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm">
