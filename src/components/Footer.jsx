@@ -138,11 +138,14 @@ const Footer = () => {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs" style={{ color: 'rgba(148,163,184,0.45)' }}>
-            © {new Date().getFullYear()} Emitter. All rights reserved.
+            © {new Date().getFullYear()} Emit. All rights reserved.
           </p>
-          <p className="text-xs" style={{ color: 'rgba(148,163,184,0.35)' }}>
-            Built with React & crafted with ♥
-          </p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs" style={{ color: 'rgba(148,163,184,0.35)' }}>
+              Built with React & crafted with
+            </p>
+            <span className='text-red-600'>❤</span>
+          </div>
         </div>
       </div>
     </footer>

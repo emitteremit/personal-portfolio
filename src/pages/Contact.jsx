@@ -3,8 +3,20 @@ import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, Us
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { MessageCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+
+const SERVICE_ID  = 'service_lksueap';
+const TEMPLATE_ID = 'template_p5tqs1b';
+const PUBLIC_KEY  = 'fTOYbzk4T_L7BKCLG';
 
 const contactInfo = [
+  {
+    icon: <MessageCircle size={20} />,
+    label: 'WhatsApp',
+    value: '+234 814 433 1503',
+    link: 'https://wa.me/2348144331503',
+    description: 'Fastest way to reach me',
+  },
   {
     icon: <Mail size={20} />,
     label: 'Email',
@@ -26,13 +38,6 @@ const contactInfo = [
     link: null,
     description: 'Available for remote collaboration',
   },
-  {
-    icon: <MessageCircle size={20} />,
-    label: 'WhatsApp',
-    value: '+234 814 433 1503',
-    link: 'https://wa.me/2348144331503',
-    description: 'Fastest way to reach me',
-  },
 ];
 
 const socialLinks = [
@@ -42,52 +47,74 @@ const socialLinks = [
   { icon: <Instagram size={20} />, label: 'Instagram', link: 'https://www.instagram.com/emit2113/', username: 'Emit2113', color: 'rgba(233, 138, 14, 0.25)' },
 ];
 
+const INITIAL_FORM = {
+  name: '',
+  email: '',
+  budget: '₦200,000 - ₦500,000',
+  projectType: 'Business Website',
+  message: '',
+};
+
 const Contact = () => {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [errors, setErrors] = useState({});
+  const [form, setForm]               = useState(INITIAL_FORM);
+  const [errors, setErrors]           = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError]   = useState('');
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (errors[`${e.target.name}Error`]) {
-      setErrors({ ...errors, [`${e.target.name}Error`]: '' });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    // Clear the error for this field on change
+    if (errors[`${name}Error`]) {
+      setErrors((prev) => ({ ...prev, [`${name}Error`]: '' }));
     }
   };
 
   const validate = () => {
     const errs = {};
-    if (!form.name.trim()) errs.nameError = 'Name is required';
-    if (!form.email.trim()) errs.emailError = 'Email is required';
+    if (!form.name.trim())    errs.nameError    = 'Name is required';
+    if (!form.email.trim())   errs.emailError   = 'Email is required';
     else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email))
       errs.emailError = 'Invalid email address';
     if (!form.message.trim()) errs.messageError = 'Message is required';
     return errs;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const check = validate();
     if (Object.keys(check).length > 0) { setErrors(check); return; }
+
     setIsSubmitting(true);
-    const subject = 'New Contact Form Submission - Portfolio';
-    const body = `Name: ${form.name}%0D%0AEmail: ${form.email}%0D%0A%0D%0AMessage:%0D%0A${form.message}`;
-    window.open(`mailto:omodeletemitope12@gmail.com?subject=${subject}&body=${body}`, '_self');
-    setTimeout(() => {
-      setForm({ name: '', email: '', message: '' });
+    setSubmitError('');
+
+    // These keys must match the variables in your EmailJS template:
+    // {{user_name}}, {{user_email}}, {{subject}}, {{message}}
+    const templateParams = {
+      user_name:   form.name,
+      user_email:  form.email,
+      subject:     `[${form.projectType}] — Budget: ${form.budget}`,
+      message:     form.message,
+    };
+
+    try {
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+      setForm(INITIAL_FORM);
       setErrors({});
-      setIsSubmitting(false);
       setSubmitSuccess(true);
       setTimeout(() => setSubmitSuccess(false), 5000);
-    }, 1000);
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setSubmitError('Something went wrong. Please try again or reach out via WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
       <Header />
-      <div className="relative min-h-screen overflow-hidden" style={{ background: 'transparent' }}>
-
-
-
+      <div className="relative min-h-screen overflow-hidden mt-[70px]" style={{ background: 'transparent' }}>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
 
@@ -116,22 +143,13 @@ const Contact = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-            {[
-              'Business Websites',
-              'Admin Dashboards',
-              'E-Commerce',
-              'Full-Stack Apps'
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="glass-card p-4 text-center"
-              >
-                <span className="font-semibold">
-                  {item}
-                </span>
+            {['Business Websites', 'Admin Dashboards', 'E-Commerce', 'Full-Stack Apps'].map((item, i) => (
+              <div key={i} className="glass-card p-4 text-center">
+                <span className="font-semibold">{item}</span>
               </div>
             ))}
           </div>
+
           {/* Content grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
@@ -144,7 +162,6 @@ const Contact = () => {
                 </p>
               </div>
 
-              {/* Info cards */}
               {contactInfo.map((info, i) => (
                 <div key={i} className="glass-card p-5 group">
                   <div className="flex items-start gap-4">
@@ -214,10 +231,7 @@ const Contact = () => {
               {/* Response time */}
               <div
                 className="p-4 rounded-xl flex items-start gap-3"
-                style={{
-                  background: 'rgba(45,212,191,0.05)',
-                  border: '1px solid rgba(45,212,191,0.18)',
-                }}
+                style={{ background: 'rgba(45,212,191,0.05)', border: '1px solid rgba(45,212,191,0.18)' }}
               >
                 <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0, marginTop: '2px' }} />
                 <div>
@@ -237,13 +251,11 @@ const Contact = () => {
                   Fill out the form below and I'll get back to you as soon as possible.
                 </p>
 
+                {/* Success banner */}
                 {submitSuccess && (
                   <div
                     className="mb-6 flex items-center gap-3 p-4 rounded-xl"
-                    style={{
-                      background: 'rgba(45,212,191,0.10)',
-                      border: '1px solid rgba(45,212,191,0.30)',
-                    }}
+                    style={{ background: 'rgba(45,212,191,0.10)', border: '1px solid rgba(45,212,191,0.30)' }}
                   >
                     <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0 }} />
                     <p className="text-sm font-medium" style={{ color: '#2dd4bf' }}>
@@ -252,7 +264,20 @@ const Contact = () => {
                   </div>
                 )}
 
+                {/* Error banner */}
+                {submitError && (
+                  <div
+                    className="mb-6 flex items-center gap-3 p-4 rounded-xl"
+                    style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.30)' }}
+                  >
+                    <p className="text-sm font-medium" style={{ color: '#f87171' }}>
+                      ⚠ {submitError}
+                    </p>
+                  </div>
+                )}
+
                 <div className="space-y-6">
+
                   {/* Name */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
@@ -268,15 +293,11 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="John Doe"
                         className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
-                        style={{
-                          borderColor: errors.nameError ? 'rgba(239,68,68,0.50)' : undefined,
-                        }}
+                        style={{ borderColor: errors.nameError ? 'rgba(239,68,68,0.50)' : undefined }}
                       />
                     </div>
                     {errors.nameError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
-                        ⚠ {errors.nameError}
-                      </p>
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.nameError}</p>
                     )}
                   </div>
 
@@ -295,46 +316,50 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="john@example.com"
                         className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
-                        style={{
-                          borderColor: errors.emailError ? 'rgba(239,68,68,0.50)' : undefined,
-                        }}
+                        style={{ borderColor: errors.emailError ? 'rgba(239,68,68,0.50)' : undefined }}
                       />
                     </div>
                     {errors.emailError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
-                        ⚠ {errors.emailError}
-                      </p>
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.emailError}</p>
                     )}
                   </div>
+
+                  {/* Budget */}
                   <div>
-                    <label className="block text-sm font-semibold mb-2.5">
+                    <label htmlFor="budget" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
                       Project Budget
                     </label>
-
                     <select
+                      id="budget"
                       name="budget"
-                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm bg-azure-900/30 text-black"
-                    >
-                      <option className='text-black'>₦200,000 - ₦500,000</option>      
-                      <option className='text-black'>Less than ₦200,000</option>
-                      <option className='text-black'>₦500,000 - ₦1,000,000</option>
-                      <option className='text-black'>₦1,000,000+</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold mb-2.5">
-                      Project Type
-                    </label>
-
-                    <select
-                      name="projectType"
+                      value={form.budget}
+                      onChange={handleChange}
                       className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
                     >
-                      <option className='text-black'>Business Website</option>
-                      <option className='text-black'>E-Commerce</option>
-                      <option className='text-black'>Admin Dashboard</option>
-                      <option className='text-black'>Portfolio Website</option>
-                      <option className='text-black'>Custom Web App</option>
+                      <option>₦200,000 - ₦500,000</option>
+                      <option>Less than ₦200,000</option>
+                      <option>₦500,000 - ₦1,000,000</option>
+                      <option>₦1,000,000+</option>
+                    </select>
+                  </div>
+
+                  {/* Project Type */}
+                  <div>
+                    <label htmlFor="projectType" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
+                      Project Type
+                    </label>
+                    <select
+                      id="projectType"
+                      name="projectType"
+                      value={form.projectType}
+                      onChange={handleChange}
+                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
+                    >
+                      <option>Business Website</option>
+                      <option>E-Commerce</option>
+                      <option>Admin Dashboard</option>
+                      <option>Portfolio Website</option>
+                      <option>Custom Web App</option>
                     </select>
                   </div>
 
@@ -353,15 +378,11 @@ const Contact = () => {
                         placeholder="Tell me about your project, timeline, and budget..."
                         rows={6}
                         className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm resize-none"
-                        style={{
-                          borderColor: errors.messageError ? 'rgba(239,68,68,0.50)' : undefined,
-                        }}
+                        style={{ borderColor: errors.messageError ? 'rgba(239,68,68,0.50)' : undefined }}
                       />
                     </div>
                     {errors.messageError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>
-                        ⚠ {errors.messageError}
-                      </p>
+                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.messageError}</p>
                     )}
                   </div>
 
@@ -373,9 +394,7 @@ const Contact = () => {
                   >
                     {isSubmitting ? (
                       <>
-                        <div
-                          className="w-5 h-5 rounded-full border-2 border-black/30 border-t-black animate-spin"
-                        />
+                        <div className="w-5 h-5 rounded-full border-2 border-black/30 border-t-black animate-spin" />
                         Sending…
                       </>
                     ) : (
@@ -388,6 +407,7 @@ const Contact = () => {
                   <p className="text-xs text-center" style={{ color: 'rgba(148,163,184,0.40)' }}>
                     By submitting this form, you agree to be contacted regarding your inquiry.
                   </p>
+
                 </div>
               </div>
             </div>
@@ -404,7 +424,8 @@ const Contact = () => {
             }}
           >
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-              Need a Website That Helps Your Business Grow?            </h3>
+              Need a Website That Helps Your Business Grow?
+            </h3>
             <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.75)' }}>
               Let's discuss your goals and create a modern,
               high-performing digital experience tailored to your needs.
@@ -418,7 +439,6 @@ const Contact = () => {
               >
                 WhatsApp Me
               </a>
-
               <a
                 href="mailto:omodeletemitope12@gmail.com"
                 className="glass-card px-8 py-4 rounded-xl font-bold"
@@ -429,6 +449,19 @@ const Contact = () => {
           </div>
 
         </div>
+
+        {/* Floating WhatsApp button */}
+        <a
+          href="https://wa.me/2348144331503"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-[9999]"
+        >
+          <div className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-xl flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110">
+            💬
+          </div>
+        </a>
+
         <Footer />
       </div>
     </>

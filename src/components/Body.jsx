@@ -5,7 +5,8 @@ import {
   ArrowRight, Zap, TrendingUp, Users, Star,
   Globe, Layers, GitBranch, Coffee
 } from 'lucide-react';
-
+import img1 from '../assets/staff.png';
+import img2 from '../assets/church.png';
 /* ── Typewriter hook ─────────────────────────────────────────────────────── */
 const useTypewriter = (words, typingSpeed = 100, deletingSpeed = 60, pause = 2000) => {
   const stateRef = React.useRef({ text: '', wordIndex: 0, isDeleting: false });
@@ -102,20 +103,25 @@ const testimonials = [
 
 const featuredProjects = [
   {
-    title: 'LL Staffing Solutions',
+    title: 'LL Staffing Solutions Website',
     description:
       'Full-stack healthcare staffing platform with admin panel, 4-step booking system, job listings, and automated email workflows. Deployed on Vercel + Render.',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
     link: 'https://llstaffingsolution.com',
-    gradient: 'linear-gradient(135deg, rgba(45,212,191,0.15), rgba(129,140,248,0.15))',
+    image: img1,
+    gradient:
+      'linear-gradient(135deg, rgba(45,212,191,0.15), rgba(129,140,248,0.15))',
   },
   {
-    title: 'QUENX E-commerce',
+    title: 'Ibadan North Diocese Church Website',
     description:
-      'Modern fashion storefront with product catalog, shopping cart, checkout flow, and premium brand aesthetics.',
-    technologies: ['React', 'Tailwind CSS', 'Vite'],
-    link: 'https://ecommerce-fi93.vercel.app/',
-    gradient: 'linear-gradient(135deg, rgba(129,140,248,0.15), rgba(244,114,182,0.12))',
+      'Full-stack church management platform with secure admin authentication, protected routes, dashboard analytics, and CRUD functionality for events, announcements, and news management.',
+    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
+    role: 'Full-Stack Developer',
+    link: 'https://ibadannorthanglicandiocese.org/',
+    image: img2,
+    gradient:
+      'linear-gradient(135deg, rgba(244,114,182,0.12), rgba(45,212,191,0.15))',
   },
 ];
 
@@ -131,7 +137,7 @@ const Body = () => {
   const typed = useTypewriter(roles, 90, 50, 2200);
 
   return (
-    <div className="relative z-10" style={{ background: 'transparent' }}>
+    <div className="relative z-10 mt-[50px]" style={{ background: 'transparent' }}>
 
       {/* ═══════════════ HERO ═══════════════════════════════════════════════ */}
       <section className="min-h-[95vh] flex items-center justify-center relative">
@@ -334,7 +340,15 @@ const Body = () => {
                 <div
                   className="h-48 relative overflow-hidden"
                   style={{ background: project.gradient }}
-                >
+                ><div className="h-48 relative overflow-hidden">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+
+                    <div className="absolute inset-0 bg-black/30" />
+                  </div>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span
                       className="text-5xl font-black tracking-tighter"
@@ -619,31 +633,8 @@ const Body = () => {
           </div>
         </div>
       </section>
-      <a
-        href="https://wa.me/2348144331503"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-[9999]"
-      >
-        <div
-          className="
-      w-14 h-14
-      bg-green-500
-      hover:bg-green-600
-      rounded-full
-      shadow-xl
-      flex items-center
-      justify-center
-      text-2xl
-      transition-all
-      duration-300
-      hover:scale-110
-    "
-        >
-          💬
-        </div>
-      </a>
     </div>
+
 
   );
 };

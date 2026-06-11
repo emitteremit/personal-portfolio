@@ -32,7 +32,7 @@ const Header = () => {
   return (
     <header
       id="main-header"
-      className={`glass-nav sticky top-0 z-50 ${scrolled ? 'scrolled' : ''}`}
+      className={`glass-nav fixed w-full top-0 z-50 ${scrolled ? 'scrolled' : ''}`}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
         {/* Logo */}

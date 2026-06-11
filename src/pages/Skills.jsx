@@ -66,7 +66,7 @@ const Skills = () => {
   return (
     <>
       <Header />
-      <div className="relative min-h-screen overflow-hidden" style={{ background: 'transparent' }}>
+      <div className="relative min-h-screen overflow-hidden mt-[70px]" style={{ background: 'transparent' }}>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
 
           {/* Header */}
@@ -278,30 +278,54 @@ const Skills = () => {
                 >
                   <div className="text-3xl font-bold gradient-text mb-1">{stat.value}</div>
                   <div className="text-sm" style={{ color: 'rgba(148,163,184,0.70)' }}>{stat.label}</div>
-                  
+
                 </div>
-                
+
               ))}
               <div className="flex flex-wrap justify-center gap-4 mb-10">
-  <a
-    href="/contact"
-    className="btn-glass-primary px-8 py-3 rounded-xl font-bold"
-  >
-    Contact Me
-  </a>
+                <a
+                  href="/contact"
+                  className="btn-glass-primary px-8 py-3 rounded-xl font-bold"
+                >
+                  Contact Me
+                </a>
 
-  <a
-    href="/resume"
-    className="glass-card px-8 py-3 rounded-xl font-bold"
-  >
-    View Projects
-  </a>
-</div>
+                <a
+                  href="/resume"
+                  className="glass-card px-8 py-3 rounded-xl font-bold"
+                >
+                  View Projects
+                </a>
+              </div>
             </div>
           </div>
 
         </div>
-        
+        <a
+          href="https://wa.me/2348144331503"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-[9999]"
+        >
+          <div
+            className="
+      w-14 h-14
+      bg-green-500
+      hover:bg-green-600
+      rounded-full
+      shadow-xl
+      flex items-center
+      justify-center
+      text-2xl
+      transition-all
+      duration-300
+      hover:scale-110
+    "
+          >
+            💬
+          </div>
+        </a>
+
         <Footer />
       </div>
     </>

@@ -25,16 +25,6 @@ const projects = [
   },
   {
     id: 2,
-    title: 'QUENX Fashion E-Commerce Storefront',
-    description:
-      'Designed and developed a premium fashion e-commerce storefront from scratch with a fully custom UI. The store features a dynamic product catalog with category filtering, an interactive shopping cart with real-time quantity and price updates, and a smooth checkout flow optimized for conversions. Built entirely with React and Tailwind CSS, with a strong focus on visual aesthetics bold typography, clean grid layouts, and hover micro-interactions that give the brand a high-end feel. Fully responsive across all screen sizes.',
-    technologies: ['React', 'Tailwind CSS', 'Vite'],
-    role: 'Front-End Developer',
-    link: 'https://ecommerce-fi93.vercel.app/',
-    image: img6,
-  },
-  {
-    id: 3,
     title: "Ibadan North Diocese Church Admin Panel",
     description:
       "Developed a full-stack church management web application for the Ibadan North Anglican Diocese. The platform features secure admin authentication with protected routes, a dynamic dashboard showing an overview of church activity, and complete CRUD functionality for managing church events, announcements, and news posts. Built the frontend with React and TypeScript for type safety, and the backend with Node.js and MongoDB for flexible data management. Admins can create, edit, publish, and delete content directly from the dashboard without touching any code.",
@@ -42,6 +32,16 @@ const projects = [
     role: "Full-Stack Developer",
     link: "https://ibadannorthanglicandiocese.org/",
     image: img7,
+  },
+  {
+    id: 3,
+    title: 'QUENX Fashion E-Commerce Storefront',
+    description:
+      'Designed and developed a premium fashion e-commerce storefront from scratch with a fully custom UI. The store features a dynamic product catalog with category filtering, an interactive shopping cart with real-time quantity and price updates, and a smooth checkout flow optimized for conversions. Built entirely with React and Tailwind CSS, with a strong focus on visual aesthetics bold typography, clean grid layouts, and hover micro-interactions that give the brand a high-end feel. Fully responsive across all screen sizes.',
+    technologies: ['React', 'Tailwind CSS', 'Vite'],
+    role: 'Front-End Developer',
+    link: 'https://ecommerce-fi93.vercel.app/',
+    image: img6,
   },
   {
     id: 4,
@@ -314,7 +314,30 @@ const Resume = () => {
           </div>
         </div>
       </div>
-
+      <a
+        href="https://wa.me/2348144331503"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-[9999]"
+      >
+        <div
+          className="
+      w-14 h-14
+      bg-green-500
+      hover:bg-green-600
+      rounded-full
+      shadow-xl
+      flex items-center
+      justify-center
+      text-2xl
+      transition-all
+      duration-300
+      hover:scale-110
+    "
+        >
+          💬
+        </div>
+      </a>
       <Footer />
     </div>
   );
