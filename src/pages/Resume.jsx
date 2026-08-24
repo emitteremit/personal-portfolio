@@ -40,7 +40,7 @@ const projects = [
       'Designed and developed a premium fashion e-commerce storefront from scratch with a fully custom UI. The store features a dynamic product catalog with category filtering, an interactive shopping cart with real-time quantity and price updates, and a smooth checkout flow optimized for conversions. Built entirely with React and Tailwind CSS, with a strong focus on visual aesthetics bold typography, clean grid layouts, and hover micro-interactions that give the brand a high-end feel. Fully responsive across all screen sizes.',
     technologies: ['React', 'Tailwind CSS', 'Vite'],
     role: 'Front-End Developer',
-    link: 'https://ecommerce-fi93.vercel.app/',
+    link: 'https://ecommerce-wv12.vercel.app/',
     image: img6,
   },
   {
