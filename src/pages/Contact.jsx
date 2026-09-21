@@ -336,10 +336,10 @@ const Contact = () => {
                       onChange={handleChange}
                       className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
                     >
-                      <option>₦200,000 - ₦500,000</option>
-                      <option>Less than ₦200,000</option>
-                      <option>₦500,000 - ₦1,000,000</option>
-                      <option>₦1,000,000+</option>
+                      <option className='text-black'>₦200,000 - ₦500,000</option>
+                      <option className='text-black'>Less than ₦200,000</option>
+                      <option className='text-black'>₦500,000 - ₦1,000,000</option>
+                      <option className='text-black'>₦1,000,000+</option>
                     </select>
                   </div>
 
@@ -355,11 +355,11 @@ const Contact = () => {
                       onChange={handleChange}
                       className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
                     >
-                      <option>Business Website</option>
-                      <option>E-Commerce</option>
-                      <option>Admin Dashboard</option>
-                      <option>Portfolio Website</option>
-                      <option>Custom Web App</option>
+                      <option className='text-black'>Business Website</option>
+                      <option className='text-black'>E-Commerce</option>
+                      <option className='text-black'>Admin Dashboard</option>
+                      <option className='text-black'>Portfolio Website</option>
+                      <option className='text-black'>Custom Web App</option>
                     </select>
                   </div>
 

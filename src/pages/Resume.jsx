@@ -9,6 +9,7 @@ import img5 from '../assets/des.png';
 import img6 from '../assets/ecommerce.png'
 import img7 from '../assets/church.png'
 import img8 from '../assets/staff.png'
+import img9 from '../assets/tlc.png'
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -25,6 +26,17 @@ const projects = [
   },
   {
     id: 2,
+    title: "TLC Assist Living - US-Based Homecare Staffing Platform",
+    description:
+      "Developed a comprehensive web application for a U.S.-based home care staffing and healthcare services company. The project includes 10+ fully-optimized pages with a professional appointment booking system, job career portal, blog/resources section, and complete employee application workflow. Implemented secure file uploads using Cloudinary for job applications and resumes. Automated all customer communications with EmailJS including appointment confirmations, application status updates, and survey responses. Designed and built a premium user interface using React with Vite and Tailwind CSS, featuring smooth animations, professional hover effects, and an intuitive navigation experience. Added interactive elements like sticky call-to-action buttons, downloadable company brochure, and customer feedback popup surveys. Ensured 100% mobile responsiveness across all devices. Deployed on Vercel with production-ready optimizations.",
+    technologies: ["React", "Vite", "Tailwind CSS", "EmailJS", "Cloudinary", "Vercel"],
+    role: "Full-Stack Developer",
+    client: "U.S.-Based Healthcare Staffing Company",
+    link: "https://tlcassistliving.com/",
+    image: img9,
+  },
+  {
+    id: 3,
     title: "Ibadan North Diocese Church Admin Panel",
     description:
       "Developed a full-stack church management web application for the Ibadan North Anglican Diocese. The platform features secure admin authentication with protected routes, a dynamic dashboard showing an overview of church activity, and complete CRUD functionality for managing church events, announcements, and news posts. Built the frontend with React and TypeScript for type safety, and the backend with Node.js and MongoDB for flexible data management. Admins can create, edit, publish, and delete content directly from the dashboard without touching any code.",
@@ -34,7 +46,7 @@ const projects = [
     image: img7,
   },
   {
-    id: 3,
+    id: 4,
     title: 'QUENX Fashion E-Commerce Storefront',
     description:
       'Designed and developed a premium fashion e-commerce storefront from scratch with a fully custom UI. The store features a dynamic product catalog with category filtering, an interactive shopping cart with real-time quantity and price updates, and a smooth checkout flow optimized for conversions. Built entirely with React and Tailwind CSS, with a strong focus on visual aesthetics bold typography, clean grid layouts, and hover micro-interactions that give the brand a high-end feel. Fully responsive across all screen sizes.',
@@ -44,7 +56,7 @@ const projects = [
     image: img6,
   },
   {
-    id: 4,
+    id: 5,
     title: 'Lindsey Gilley Interiors Interior Design Website',
     description:
       'Built a responsive, visually rich website for a professional interior design studio. The site showcases the designer\'s portfolio through a curated gallery section, detailed service descriptions covering residential and commercial projects, and a fully functional contact form for client inquiries. Focused heavily on visual presentation clean whitespace, elegant typography, and smooth scroll behavior to reflect the luxury feel of the brand. Built with HTML, Tailwind CSS, and vanilla JavaScript, with AOS animations for scroll-triggered reveals.',
@@ -54,7 +66,7 @@ const projects = [
     image: img3,
   },
   {
-    id: 5,
+    id: 6,
     title: 'RQ Charming Homes Real Estate Website',
     description:
       'Developed a fully responsive real estate website for a property listings business. The site features a searchable property catalog with detailed listing pages including high-quality image galleries, property specs, pricing, and location info. Includes a contact form for booking viewings and a clean, professional layout designed to build trust with potential buyers and renters. Built with React and Tailwind CSS, with component-based architecture for easy property data management and fast page rendering.',
@@ -64,7 +76,7 @@ const projects = [
     image: img2,
   },
   {
-    id: 6,
+    id: 7,
     title: 'Luxury Apartments Property Landing Page',
     description:
       'Developed a high-converting apartment landing page designed to showcase luxury living spaces and drive lead generation. The page features an interactive floor plans section, detailed amenities breakdown, resident testimonials, and a contact/inquiry form. Used Bootstrap for responsive grid layout and AOS (Animate on Scroll) for smooth entrance animations that keep visitors engaged as they scroll. Clean visual hierarchy and strategic CTAs guide potential residents toward booking a viewing.',
@@ -74,7 +86,7 @@ const projects = [
     image: img1,
   },
   {
-    id: 7,
+    id: 8,
     title: 'Sensible Solutions Interior Design Portfolio',
     description:
       'Built a polished portfolio website for Sensible Solutions, an interior design firm, to showcase their project work and attract new clients. The site features a project gallery with before-and-after transformations, a services section detailing their design process, client testimonials, and a contact form. Designed with a clean, minimal aesthetic that lets the design work speak for itself neutral color palette, generous whitespace, and smooth transitions. Built with React and Tailwind CSS, fully responsive across desktop and mobile.',
@@ -84,7 +96,7 @@ const projects = [
     image: img4,
   },
   {
-    id: 8,
+    id: 9,
     title: 'Construction Concepts Commercial Design & Build',
     description:
       'Developed a professional website for Construction Concepts, a Houston-based commercial construction firm. The site clearly presents their core services turnkey construction, construction management, architectural design, and permit expediting with dedicated sections for each service area. Includes a project showcase, company overview, and a contact section for client inquiries and project consultations. Built with React and Tailwind CSS, with a bold, industrial aesthetic that matches the firm\'s brand. Fully responsive and optimized for fast load times.',

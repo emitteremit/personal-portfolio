@@ -8,6 +8,7 @@ const navLinks = [
   { path: '/Skills', label: 'Skills' },
   { path: '/Resume', label: 'Projects' },
   { path: '/Contact', label: 'Contact' },
+  { path: '/services', label: 'services' },
 ];
 
 const Header = () => {
