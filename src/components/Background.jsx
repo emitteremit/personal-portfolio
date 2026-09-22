@@ -1,86 +1,163 @@
-import React from 'react';
+import React, { useEffect, useRef } from "react";
 
-// Generate stable particle list once (not on every render)
-const PARTICLES = Array.from({ length: 22 }, (_, i) => ({
-    id: i,
-    left: `${(i * 4.7 + 3) % 100}%`,
-    top: `${(i * 7.3 + 8) % 100}%`,
-    size: `${2 + (i % 3)}px`,
-    opacity: 0.25 + (i % 5) * 0.08,
-    color: i % 3 === 0
-        ? 'rgba(45,212,191,0.70)'
-        : i % 3 === 1
-            ? 'rgba(139,92,246,0.60)'
-            : 'rgba(59,130,246,0.55)',
-}));
+/* =========================================================
+   BACKGROUND
+   Lightweight • 2 Orbs • Mouse Repulsion • No Canvas
+========================================================= */
 
-const Background = () => (
+const Background = () => {
+  const orbRefs = useRef([]);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+
+      orbRefs.current.forEach((orb) => {
+        if (!orb) return;
+
+        const rect = orb.getBoundingClientRect();
+
+        const orbX = rect.left + rect.width / 2;
+        const orbY = rect.top + rect.height / 2;
+
+        const dx = orbX - mouseX;
+        const dy = orbY - mouseY;
+
+        const distance = Math.sqrt(
+          dx * dx + dy * dy
+        );
+
+        const radius = 260;
+
+        if (distance < radius) {
+          const safeDistance = Math.max(distance, 1);
+
+          const force =
+            Math.pow(
+              1 - distance / radius,
+              2
+            );
+
+          const moveX =
+            (dx / safeDistance) *
+            35 *
+            force;
+
+          const moveY =
+            (dy / safeDistance) *
+            35 *
+            force;
+
+          orb.style.setProperty(
+            "--mouse-x",
+            `${moveX}px`
+          );
+
+          orb.style.setProperty(
+            "--mouse-y",
+            `${moveY}px`
+          );
+        } else {
+          orb.style.setProperty(
+            "--mouse-x",
+            "0px"
+          );
+
+          orb.style.setProperty(
+            "--mouse-y",
+            "0px"
+          );
+        }
+      });
+    };
+
+    let ticking = false;
+
+    const onMouseMove = (event) => {
+      if (ticking) return;
+
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        handleMouseMove(event);
+        ticking = false;
+      });
+    };
+
+    window.addEventListener(
+      "mousemove",
+      onMouseMove,
+      { passive: true }
+    );
+
+    return () => {
+      window.removeEventListener(
+        "mousemove",
+        onMouseMove
+      );
+    };
+  }, []);
+
+  return (
     <div
-        aria-hidden="true"
-        style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-            overflow: 'hidden',
-        }}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 overflow-hidden"
+      style={{
+        zIndex: 0,
+      }}
     >
-        {/* ── Ambient Orbs ─────────────────────────────── */}
-        <div
-            className="orb orb-teal orb-float"
-            style={{
-                width: '650px',
-                height: '650px',
-                top: '-12%',
-                right: '-6%',
-                opacity: 0.75,
-                animationDelay: '0s',
-                animationDuration: '28s'
-            }}
-        />
-        <div
-            className="orb orb-purple orb-float"
-            style={{
-                width: '550px',
-                height: '550px',
-                bottom: '-8%',
-                left: '-9%',
-                opacity: 0.65,
-                animationDelay: '-5s',
-                animationDuration: '32s'
-            }}
-        />
-        <div
-            className="orb orb-blue orb-float"
-            style={{
-                width: '400px',
-                height: '400px',
-                top: '38%',
-                left: '42%',
-                opacity: 0.45,
-                animationDelay: '-12s',
-                animationDuration: '24s'
-            }}
-        />
+      {/* =====================================================
+          LIGHTWEIGHT AMBIENT ORBS
+      ====================================================== */}
 
-        {/* ── Floating Particles ───────────────────────── */}
-        {PARTICLES.map((p, i) => (
-            <span
-                key={p.id}
-                className="particle"
-                style={{
-                    left: p.left,
-                    top: p.top,
-                    width: p.size,
-                    height: p.size,
-                    opacity: p.opacity,
-                    background: p.color,
-                    animationDelay: `${-(i * 0.7)}s`,
-                    animationDuration: `${12 + (i % 7)}s`
-                }}
-            />
-        ))}
+      {/* Desktop / Top Right */}
+      <div
+        ref={(el) => {
+          orbRefs.current[0] = el;
+        }}
+        className="premium-orb premium-orb-blue"
+        style={{
+          width: "380px",
+          height: "380px",
+          top: "-15%",
+          right: "-10%",
+          opacity: 0.20,
+          animationDelay: "0s",
+          animationDuration: "50s",
+        }}
+      />
+
+      {/* Desktop / Bottom Left */}
+      <div
+        ref={(el) => {
+          orbRefs.current[1] = el;
+        }}
+        className="premium-orb premium-orb-cyan"
+        style={{
+          width: "320px",
+          height: "320px",
+          bottom: "-13%",
+          left: "-9%",
+          opacity: 0.16,
+          animationDelay: "-12s",
+          animationDuration: "56s",
+        }}
+      />
+
+      {/* =====================================================
+          VERY SUBTLE GRID
+      ====================================================== */}
+
+      <div className="premium-grid" />
+
+      {/* =====================================================
+          EDGE VIGNETTE
+      ====================================================== */}
+
+      <div className="premium-vignette" />
     </div>
-);
+  );
+};
 
 export default Background;

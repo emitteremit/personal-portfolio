@@ -1,641 +1,1172 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
-  Code2, Server, Palette, ExternalLink,
-  ArrowRight, Zap, TrendingUp, Users, Star,
-  Globe, Layers, GitBranch, Coffee
-} from 'lucide-react';
-import img1 from '../assets/staff.png';
-import img2 from '../assets/church.png';
-/* ── Typewriter hook ─────────────────────────────────────────────────────── */
-const useTypewriter = (words, typingSpeed = 100, deletingSpeed = 60, pause = 2000) => {
-  const stateRef = React.useRef({ text: '', wordIndex: 0, isDeleting: false });
-  const [displayText, setDisplayText] = useState('');
-  const timeoutRef = React.useRef(null);
+  Code2,
+  Server,
+  Palette,
+  ExternalLink,
+  ArrowRight,
+  TrendingUp,
+  Globe,
+  Layers,
+  GitBranch,
+  Database,
+  ShieldCheck,
+  LayoutDashboard,
+  Smartphone,
+  Mail,
+  CheckCircle2,
+  BriefcaseBusiness,
+  Clock3,
+  FileImage,
+  CreditCard,
+  Megaphone,
+  Image,
+  Handshake,
+} from "lucide-react";
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+import img1 from "../assets/staff.png";
+import img2 from "../assets/church.png";
+
+/* =========================
+   TYPEWRITER HOOK
+========================= */
+
+const useTypewriter = (
+  words,
+  typingSpeed = 85,
+  deletingSpeed = 45
+) => {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
-    const tick = () => {
-      const { text, wordIndex, isDeleting } = stateRef.current;
-      const current = words[wordIndex];
+    const currentWord = words[wordIndex];
 
-      if (!isDeleting && text === current) {
-        timeoutRef.current = setTimeout(() => {
-          stateRef.current.isDeleting = true;
-          tick();
-        }, pause);
-        return;
-      }
+    const timeout = setTimeout(
+      () => {
+        if (!isDeleting) {
+          const nextText = currentWord.substring(0, text.length + 1);
+          setText(nextText);
 
-      if (isDeleting && text === '') {
-        stateRef.current.isDeleting = false;
-        stateRef.current.wordIndex = (wordIndex + 1) % words.length;
-        timeoutRef.current = setTimeout(tick, typingSpeed);
-        return;
-      }
+          if (nextText === currentWord) {
+            setTimeout(() => setIsDeleting(true), 1400);
+          }
+        } else {
+          const nextText = currentWord.substring(0, text.length - 1);
+          setText(nextText);
 
-      const next = isDeleting
-        ? current.substring(0, text.length - 1)
-        : current.substring(0, text.length + 1);
+          if (nextText === "") {
+            setIsDeleting(false);
+            setWordIndex((prev) => (prev + 1) % words.length);
+          }
+        }
+      },
+      isDeleting ? deletingSpeed : typingSpeed
+    );
 
-      stateRef.current.text = next;
-      setDisplayText(next);
+    return () => clearTimeout(timeout);
+  }, [
+    text,
+    isDeleting,
+    wordIndex,
+    words,
+    typingSpeed,
+    deletingSpeed,
+  ]);
 
-      timeoutRef.current = setTimeout(tick, isDeleting ? deletingSpeed : typingSpeed);
-    };
-
-    timeoutRef.current = setTimeout(tick, typingSpeed);
-    return () => clearTimeout(timeoutRef.current);
-  }, [words, typingSpeed, deletingSpeed, pause]);
-
-  return displayText;
+  return text;
 };
 
-/* ── Data ────────────────────────────────────────────────────────────────── */
-const roles = ['Full-Stack Developer', 'React Specialist', 'UI/UX Enthusiast', 'Problem Solver'];
+/* =========================
+   HERO ROLES
+========================= */
 
-const techBadges = ['React', 'Node.js', 'MongoDB', 'Tailwind CSS', 'Express', 'Vite', 'JavaScript', 'Git'];
+const roles = [
+  "Full-Stack Developer",
+  "React & Node.js Developer",
+  "Backend & API Developer",
+  "Website Developer",
+  "Graphics Designer",
+  "Business Card & Flyer Designer",
+  "Social Media Graphics Designer",
+];
+
+/* =========================
+   TECH BADGES
+========================= */
+
+const techBadges = [
+  "React",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "REST APIs",
+  "JWT",
+  "Tailwind CSS",
+  "Vite",
+  "JavaScript",
+  "Git",
+];
+
+/* =========================
+   SERVICES
+========================= */
 
 const services = [
   {
-    icon: <Code2 size={26} />,
-    title: 'Frontend Development',
-    desc: 'Pixel-perfect, responsive interfaces with React, Vite, and Tailwind CSS fast, clean, and built to impress.',
-    color: '#2dd4bf',
-    rgb: '45,212,191',
+    icon: <Code2 size={24} />,
+    title: "Website Development",
+    description:
+      "Responsive business websites built around real business goals, users and content.",
   },
   {
-    icon: <Server size={26} />,
-    title: 'Backend Development',
-    desc: 'Robust REST APIs and server logic with Node.js, Express, and MongoDB secure, scalable, and production-ready.',
-    color: '#818cf8',
-    rgb: '129,140,248',
+    icon: <Server size={24} />,
+    title: "Backend & API Development",
+    description:
+      "REST APIs, authentication, databases, middleware and backend integrations using Node.js.",
   },
   {
-    icon: <Globe size={26} />,
-    title: 'Full-Stack Web Apps',
-    desc: 'End-to-end web applications from database to UI including auth, admin panels, dashboards, and deployment.',
-    color: '#60a5fa',
-    rgb: '96,165,250',
+    icon: <Layers size={24} />,
+    title: "Full-Stack Applications",
+    description:
+      "Complete web applications connecting modern interfaces with APIs and database systems.",
   },
   {
-    icon: <Palette size={26} />,
-    title: 'UI/UX Design',
-    desc: 'User-centered design with a strong eye for detail clean layouts, smooth interactions, and brand-consistent visuals.',
-    color: '#f472b6',
-    rgb: '244,114,182',
+    icon: <Palette size={24} />,
+    title: "Graphics & Business Design",
+    description:
+      "Business cards, flyers, social media graphics, brochures and other business materials.",
   },
 ];
-const testimonials = [
+
+/* =========================
+   STATS
+========================= */
+
+const stats = [
   {
-    name: "Business Owner",
-    text: "Professional, responsive and delivered beyond expectations."
+    value: "3+",
+    label: "Years Experience",
+    icon: <TrendingUp size={20} />,
   },
   {
-    name: "Healthcare Client",
-    text: "Excellent communication and a very clean final product."
+    value: "10+",
+    label: "Projects Delivered",
+    icon: <Layers size={20} />,
   },
   {
-    name: "Startup Founder",
-    text: "One of the best developers we've worked with."
-  }
+    value: "Full Stack",
+    label: "Development",
+    icon: <Code2 size={20} />,
+  },
+  {
+    value: "10+",
+    label: "Technologies",
+    icon: <GitBranch size={20} />,
+  },
 ];
+
+/* =========================
+   FEATURED PROJECTS
+========================= */
 
 const featuredProjects = [
   {
-    title: 'LL Staffing Solutions Website',
+    title: "LL Staffing Solutions",
+    category: "Full-Stack Healthcare Platform",
     description:
-      'Full-stack healthcare staffing platform with admin panel, 4-step booking system, job listings, and automated email workflows. Deployed on Vercel + Render.',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Express'],
-    link: 'https://llstaffingsolution.com',
+      "A full-stack healthcare staffing platform with service information, appointment booking, job listings, application workflows and an administrative system.",
     image: img1,
-    gradient:
-      'linear-gradient(135deg, rgba(45,212,191,0.15), rgba(129,140,248,0.15))',
+    technologies: ["React", "Node.js", "MongoDB", "Express"],
+    link: "https://llstaffingsolution.com",
+    role: "Full-Stack Developer",
   },
   {
-    title: 'Ibadan North Diocese Church Website',
+    title: "Ibadan North Diocese",
+    category: "Church Management Platform",
     description:
-      'Full-stack church management platform with secure admin authentication, protected routes, dashboard analytics, and CRUD functionality for events, announcements, and news management.',
-    technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'MongoDB'],
-    role: 'Full-Stack Developer',
-    link: 'https://ibadannorthanglicandiocese.org/',
+      "A modern church platform with secure admin authentication, protected routes, dashboard management, events, announcements and news content management.",
     image: img2,
-    gradient:
-      'linear-gradient(135deg, rgba(244,114,182,0.12), rgba(45,212,191,0.15))',
+    technologies: [
+      "React",
+      "TypeScript",
+      "Tailwind",
+      "Node.js",
+      "MongoDB",
+    ],
+    link: "https://ibadannorthanglicandiocese.org",
+    role: "Full-Stack Developer",
   },
 ];
 
-const stats = [
-  { value: '10+', label: 'Projects Completed', icon: <Layers size={22} /> },
-  { value: '3+', label: 'Years of Experience', icon: <Star size={22} /> },
-  { value: '10+', label: 'Happy Clients', icon: <Users size={22} /> },
-  { value: '100%', label: 'Client Satisfaction', icon: <TrendingUp size={22} /> },
-];
+/* =========================
+   COMPONENT
+========================= */
 
-/* ── Component ───────────────────────────────────────────────────────────── */
 const Body = () => {
-  const typed = useTypewriter(roles, 90, 50, 2200);
+  const typedRole = useTypewriter(roles);
 
   return (
-    <div className="relative z-10 mt-[50px]" style={{ background: 'transparent' }}>
+    <div className="min-h-screen bg-[#020617] text-white overflow-hidden">
+      <Header />
 
-      {/* ═══════════════ HERO ═══════════════════════════════════════════════ */}
-      <section className="min-h-[95vh] flex items-center justify-center relative">
-        <div className="text-center max-w-4xl mx-auto px-4 sm:px-6 py-24 fade-up">
+      {/* =========================
+          HERO
+      ========================= */}
 
-          {/* Status badge */}
-          <div
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-sm font-semibold mb-8"
-            style={{
-              background: 'rgba(45,212,191,0.08)',
-              border: '1px solid rgba(45,212,191,0.25)',
-              backdropFilter: 'blur(12px)',
-              color: '#2dd4bf',
-            }}
-          >
-            <span className="pulse-dot" />
-            Available for Opportunities
-          </div>
+      <section className="relative min-h-screen flex items-center pt-24 pb-16">
+        {/* Background glow */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-[8%] w-72 h-72 bg-cyan-500/[0.07] rounded-full blur-3xl" />
 
-          {/* Name */}
-          <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tight mb-6">
-            Hi, I'm{' '}
-            <span className="gradient-text text-glow">Omodele Temitope</span>
-          </h1>
+          <div className="absolute bottom-10 right-[8%] w-80 h-80 bg-blue-600/[0.07] rounded-full blur-3xl" />
 
-          {/* Typewriter */}
-          <div className="h-10 sm:h-12 flex items-center justify-center mb-6">
-            <p className="text-xl sm:text-2xl lg:text-3xl font-light" style={{ color: 'rgba(148,163,184,0.85)' }}>
-              {typed}
-              <span
-                className="cursor-blink ml-0.5 inline-block w-[2px] h-[1.2em] align-middle"
-                style={{ background: '#2dd4bf' }}
-              />
-            </p>
-          </div>
-
-          {/* Subtitle */}
-          <p
-            className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-6"
-            style={{ color: 'rgba(148,163,184,0.65)' }}
-          >
-            Freelance developer based in Nigeria with 3+ years of experience,
-            building full-stack web applications that solve real problems from
-            healthcare platforms to e-commerce storefronts.
-          </p>
-
-          {/* Tech badge strip */}
-          <div className="flex flex-wrap gap-2 justify-center mb-10">
-            {techBadges.map((tech, i) => (
-              <span
-                key={i}
-                className="px-3 py-1 rounded-full text-xs font-semibold"
-                style={{
-                  background: 'rgba(45,212,191,0.07)',
-                  border: '1px solid rgba(45,212,191,0.18)',
-                  color: 'rgba(148,163,184,0.80)',
-                }}
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center mb-14">
-            <Link to="/Resume">
-              <button className="btn-glass-primary px-8 py-3.5 rounded-xl font-bold text-sm flex items-center gap-2">
-                View My Work <ArrowRight size={16} />
-              </button>
-            </Link>
-            <Link to="/Contact">
-              <button className="btn-glass-outline px-8 py-3.5 rounded-xl font-bold text-sm flex items-center gap-2">
-                Get In Touch <Zap size={16} />
-              </button>
-            </Link>
-          </div>
-
-          {/* Mini about strip */}
-          <div
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto"
-          >
-            {[
-              { icon: <Coffee size={16} />, label: 'Based in Nigeria 🇳🇬' },
-              { icon: <GitBranch size={16} />, label: 'Open to Remote Work' },
-              { icon: <Code2 size={16} />, label: '3+ Years Experience' },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-medium"
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  color: 'rgba(148,163,184,0.70)',
-                }}
-              >
-                <span style={{ color: '#2dd4bf' }}>{item.icon}</span>
-                {item.label}
-              </div>
-            ))}
-          </div>
+          <div className="absolute top-[45%] left-[48%] w-40 h-40 bg-emerald-500/[0.04] rounded-full blur-3xl" />
         </div>
-      </section>
 
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-14 xl:gap-20 items-center">
 
-          <div className="text-center mb-14">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Why <span className="gradient-text">Choose Me</span>
-            </h2>
+            {/* =========================
+                LEFT
+            ========================= */}
 
-            <p
-              className="max-w-xl mx-auto"
-              style={{ color: 'rgba(148,163,184,0.7)' }}
-            >
-              More than just building websites.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              "Fast Delivery",
-              "Responsive Design",
-              "SEO Optimized",
-              "Modern UI/UX",
-              "Admin Panel Development",
-              "Ongoing Support"
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="glass-card p-6 text-center"
-              >
-                <h3 className="font-semibold">
-                  {item}
-                </h3>
+            <div>
+              {/* Availability */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.04] text-emerald-300 text-xs sm:text-sm mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Available for Opportunities
               </div>
-            ))}
-          </div>
 
-        </div>
-      </section>
+              {/* Heading */}
+              <h1 className="text-[2.7rem] sm:text-5xl lg:text-[3.7rem] xl:text-[4.2rem] font-bold tracking-[-0.025em] leading-[1.05]">
+                Hi, I'm{" "}
+                <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                  Omodele Temitope{" "}
+                  <span className="font-mono text-sm sm:text-base lg:text-lg font-medium tracking-tight text-cyan-400/90 align-middle">
+                    (&lt;Emit/&gt;)
+                  </span>
+                </span>
+              </h1>
 
-      {/* ═══════════════ SERVICES ═══════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14 fade-up">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              What I <span className="gradient-text">Do</span>
-            </h2>
-            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(148,163,184,0.70)' }}>
-              End-to-end development services from concept to deployment
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {services.map((svc, i) => (
-              <div
-                key={i}
-                className="glass-card p-7 text-center group fade-up"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 icon-glow transition-all duration-300 group-hover:scale-110"
-                  style={{
-                    background: `rgba(${svc.rgb},0.12)`,
-                    border: `1px solid rgba(${svc.rgb},0.25)`,
-                    color: svc.color,
-                  }}
-                >
-                  {svc.icon}
+              {/* Typewriter */}
+              <div className="mt-6 min-h-[48px]">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-slate-500 font-mono text-sm">
+                    **
+                  </span>
+
+                  <h2 className="text-xl sm:text-2xl lg:text-[1.7rem] font-semibold text-slate-200">
+                    {typedRole}
+                  </h2>
+
+                  <span className="text-cyan-400 animate-pulse font-mono">
+                    _
+                  </span>
                 </div>
-                <h3 className="font-bold text-base mb-2 text-white">{svc.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'rgba(148,163,184,0.70)' }}>
-                  {svc.desc}
-                </p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ═══════════════ FEATURED PROJECTS ═════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14 fade-up">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Featured <span className="gradient-text">Projects</span>
-            </h2>
-            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(148,163,184,0.70)' }}>
-              Recent work showcasing full-stack development capabilities
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {featuredProjects.map((project, i) => (
-              <div
-                key={i}
-                className="glass-card overflow-hidden group fade-up"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                {/* Gradient header */}
-                <div
-                  className="h-48 relative overflow-hidden"
-                  style={{ background: project.gradient }}
-                ><div className="h-48 relative overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
+              {/* Description */}
+              <p className="mt-5 max-w-2xl text-sm sm:text-base lg:text-[1.05rem] text-slate-400 leading-7">
+                Full-stack developer based in Nigeria with 3+ years of
+                experience building responsive websites, production-ready web
+                applications, dashboards, APIs and database-driven systems.
+                I also provide professional graphics and business design
+                services.
+              </p>
 
-                    <div className="absolute inset-0 bg-black/30" />
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span
-                      className="text-5xl font-black tracking-tighter"
-                      style={{ color: 'rgba(255,255,255,0.06)' }}
-                    >
-                      {project.title.split(' ')[0]}
-                    </span>
-                  </div>
-                  {/* Hover overlay */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: 'rgba(3,7,18,0.60)' }}
+              {/* Tech badges */}
+              <div className="flex flex-wrap gap-2 mt-6 max-w-2xl">
+                {techBadges.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/[0.035] text-[11px] sm:text-xs text-slate-300 hover:border-cyan-400/30 hover:text-cyan-300 transition"
                   >
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-glass-primary px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2"
-                    >
-                      View Live <ExternalLink size={14} />
-                    </a>
-                  </div>
-                </div>
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(148,163,184,0.75)' }}>
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies.map((tech, j) => (
-                      <span key={j} className="glass-chip">{tech}</span>
-                    ))}
-                  </div>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-semibold flex items-center gap-1.5 transition-colors"
-                    style={{ color: '#2dd4bf' }}
-                  >
-                    View Project <ArrowRight size={14} />
-                  </a>
-                </div>
+                    {tech}
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="text-center mt-10 fade-up">
-            <Link to="/Resume">
-              <button className="btn-glass-outline px-8 py-3 rounded-xl font-bold text-sm flex items-center gap-2 mx-auto">
-                View All Projects <ArrowRight size={16} />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </section>
 
-      {/* ═══════════════ SKILLS PREVIEW ════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14 fade-up">
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Technical <span className="gradient-text">Skills</span>
-            </h2>
-            <p className="text-base max-w-lg mx-auto" style={{ color: 'rgba(148,163,184,0.70)' }}>
-              Technologies I use to bring ideas to life
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 fade-up">
-            {[
-              {
-                title: 'Frontend',
-                skills: ['React & Vite', 'Tailwind CSS', 'JavaScript / TypeScript', 'HTML & CSS', 'Figma Design'],
-                color: '#2dd4bf',
-                rgb: '45,212,191',
-              },
-              {
-                title: 'Backend',
-                skills: ['Node.js & Express', 'MongoDB', 'RESTful APIs', 'JWT Authentication', 'EmailJS'],
-                color: '#818cf8',
-                rgb: '129,140,248',
-              },
-              {
-                title: 'Tools & Deployment',
-                skills: ['Git & GitHub', 'Vercel & Render', 'Postman', 'VS Code', 'npm / yarn'],
-                color: '#60a5fa',
-                rgb: '96,165,250',
-              },
-            ].map((cat, i) => (
-              <div
-                key={i}
-                className="glass-card p-7 group"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <h3
-                  className="text-lg font-bold mb-5 flex items-center gap-2"
-                  style={{ color: cat.color }}
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-3 mt-8">
+                <Link
+                  to="/Resume"
+                  className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-slate-950 text-sm font-semibold hover:bg-cyan-50 transition"
                 >
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{
-                      background: cat.color,
-                      boxShadow: `0 0 8px ${cat.color}`,
-                    }}
+                  View My Work
+
+                  <ArrowRight
+                    size={17}
+                    className="group-hover:translate-x-1 transition"
                   />
-                  {cat.title}
-                </h3>
-                <ul className="space-y-3">
-                  {cat.skills.map((skill, j) => (
-                    <li
-                      key={j}
-                      className="flex items-center gap-3 text-sm"
-                      style={{ color: 'rgba(203,213,225,0.85)' }}
-                    >
-                      <div
-                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                        style={{
-                          background: cat.color,
-                          boxShadow: `0 0 6px rgba(${cat.rgb},0.60)`,
-                        }}
+                </Link>
+
+                <Link
+                  to="/Contact"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/15 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] transition"
+                >
+                  Get In Touch
+                  <Mail size={17} />
+                </Link>
+              </div>
+
+              {/* Availability strip */}
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-7 text-xs sm:text-sm text-slate-500">
+                <span className="flex items-center gap-2">
+                  <Globe size={15} className="text-cyan-400" />
+                  Based in Nigeria 🇳🇬
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <GitBranch size={15} className="text-cyan-400" />
+                  Open to Remote Work
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <Handshake size={15} className="text-cyan-400" />
+                  Projects & Contracts
+                </span>
+              </div>
+            </div>
+
+            {/* =========================
+                RIGHT  CURRENT ROLE
+            ========================= */}
+
+            <div className="relative hidden lg:block">
+              <div className="relative max-w-[420px] mx-auto">
+
+                <div className="relative rounded-[1.75rem] border border-white/10 bg-white/[0.035] backdrop-blur-xl p-5 shadow-2xl">
+
+                  {/* Top */}
+                  <div className="flex items-start justify-between gap-5 mb-5">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">
+                        Current Role
+                      </p>
+
+                      <h3 className="text-lg font-semibold mt-1.5">
+                        Full-Stack Developer
+                      </h3>
+
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+
+                        <span className="text-[11px] text-emerald-400">
+                          Internship · Current
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center">
+                      <BriefcaseBusiness
+                        className="text-cyan-400"
+                        size={20}
                       />
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
+                    </div>
+                  </div>
+
+                  {/* SmartPay */}
+                  <div className="rounded-xl border border-white/10 bg-black/20 p-4">
+                    <div className="flex items-start gap-3.5">
+
+                      <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-400/20 flex items-center justify-center shrink-0">
+                        <Server
+                          className="text-blue-400"
+                          size={19}
+                        />
+                      </div>
+
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="text-sm font-semibold text-white">
+                            SmartPay
+                          </h4>
+
+                          <span className="text-[9px] px-1.5 py-0.5 rounded-full border border-emerald-400/20 bg-emerald-400/5 text-emerald-400 uppercase tracking-wide">
+                            Current
+                          </span>
+                        </div>
+
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          Full-Stack Developer Intern
+                        </p>
+
+                        <p className="text-xs text-slate-400 mt-3 leading-5">
+                          Working across frontend and backend technologies to
+                          build and maintain production fintech applications,
+                          dashboards, APIs and database-driven workflows.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Opportunity */}
+                  <div className="mt-3 rounded-xl border border-cyan-400/15 bg-cyan-400/[0.035] p-3.5">
+                    <div className="flex items-start gap-3">
+                      <Clock3
+                        size={17}
+                        className="text-cyan-400 mt-0.5 shrink-0"
+                      />
+
+                      <div>
+                        <p className="text-xs font-medium text-white">
+                          Still open to opportunities
+                        </p>
+
+                        <p className="text-[11px] text-slate-500 mt-1 leading-5">
+                          Open to remote jobs, freelance projects, contracts
+                          and collaborations alongside my current internship.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stack */}
+                  <div className="grid grid-cols-2 gap-2.5 mt-3">
+
+                    <div className="rounded-xl border border-white/10 bg-white/[0.025] p-3.5">
+                      <Code2
+                        size={18}
+                        className="text-cyan-400 mb-2.5"
+                      />
+
+                      <p className="text-[10px] text-slate-500">
+                        Frontend
+                      </p>
+
+                      <p className="text-xs font-medium mt-1">
+                        React + Vite
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-white/10 bg-white/[0.025] p-3.5">
+                      <Database
+                        size={18}
+                        className="text-emerald-400 mb-2.5"
+                      />
+
+                      <p className="text-[10px] text-slate-500">
+                        Backend
+                      </p>
+
+                      <p className="text-xs font-medium mt-1">
+                        Node + MongoDB
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-white/10 bg-white/[0.025] p-3.5">
+                      <ShieldCheck
+                        size={18}
+                        className="text-blue-400 mb-2.5"
+                      />
+
+                      <p className="text-[10px] text-slate-500">
+                        Security
+                      </p>
+
+                      <p className="text-xs font-medium mt-1">
+                        JWT + Middleware
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-white/10 bg-white/[0.025] p-3.5">
+                      <LayoutDashboard
+                        size={18}
+                        className="text-purple-400 mb-2.5"
+                      />
+
+                      <p className="text-[10px] text-slate-500">
+                        Systems
+                      </p>
+
+                      <p className="text-xs font-medium mt-1">
+                        APIs + Dashboards
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Glow */}
+                <div className="absolute -z-10 -inset-6 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-emerald-500/10 blur-3xl rounded-full" />
               </div>
-            ))}
-          </div>
-          <div className="text-center mt-10 fade-up">
-            <Link to="/Skills">
-              <button className="btn-glass-outline px-8 py-3 rounded-xl font-bold text-sm flex items-center gap-2 mx-auto">
-                View All Skills <ArrowRight size={16} />
-              </button>
-            </Link>
+            </div>
           </div>
         </div>
       </section>
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
 
-          <div className="text-center mb-14">
-            <h2 className="text-4xl sm:text-5xl font-bold">
-              Client <span className="gradient-text">Testimonials</span>
-            </h2>
-          </div>
+      {/* =========================
+          STATS
+      ========================= */}
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((item, i) => (
+      <section className="relative py-12 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+
+            {stats.map((stat) => (
               <div
-                key={i}
-                className="glass-card p-8"
+                key={stat.label}
+                className="group rounded-xl border border-white/10 bg-white/[0.025] p-4 sm:p-5 hover:bg-white/[0.045] hover:border-cyan-400/20 transition"
               >
-                <p
-                  className="mb-6"
-                  style={{ color: 'rgba(148,163,184,0.75)' }}
-                >
-                  "{item.text}"
-                </p>
-
-                <h4 className="font-bold">
-                  {item.name}
-                </h4>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* ═══════════════ STATS ══════════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5 fade-up">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className="glass-card p-6 sm:p-8 text-center"
-                style={{ animationDelay: `${i * 0.08}s` }}
-              >
-                <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                  style={{
-                    background: 'rgba(45,212,191,0.10)',
-                    border: '1px solid rgba(45,212,191,0.20)',
-                    color: '#2dd4bf',
-                  }}
-                >
+                <div className="w-9 h-9 rounded-lg bg-cyan-400/10 border border-cyan-400/10 flex items-center justify-center text-cyan-400 mb-3">
                   {stat.icon}
                 </div>
-                <div className="text-3xl sm:text-4xl font-black stat-number mb-1">
+
+                <p className="text-lg sm:text-xl font-bold text-white">
                   {stat.value}
-                </div>
-                <p className="text-xs sm:text-sm font-medium" style={{ color: 'rgba(148,163,184,0.65)' }}>
+                </p>
+
+                <p className="text-[11px] sm:text-xs text-slate-500 mt-1">
                   {stat.label}
                 </p>
               </div>
             ))}
+
           </div>
         </div>
       </section>
 
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-6xl mx-auto">
+      {/* =========================
+          WHAT I BRING
+      ========================= */}
 
-          <div className="text-center mb-14">
-            <h2 className="text-4xl sm:text-5xl font-bold">
-              My Process
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="max-w-2xl mb-12">
+            <span className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em]">
+              What I Bring
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+              Building beyond the interface
             </h2>
+
+            <p className="text-slate-400 text-sm sm:text-base mt-4 leading-7">
+              I work across the stack  from responsive interfaces and
+              component architecture to APIs, authentication, databases,
+              deployment and business graphics.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-5 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
 
             {[
-              "Discovery",
-              "Planning",
-              "Development",
-              "Testing",
-              "Launch"
-            ].map((step, i) => (
+              {
+                icon: <Smartphone size={20} />,
+                title: "Responsive Interfaces",
+                text: "Interfaces designed to work smoothly across mobile, tablet and desktop devices.",
+              },
+              {
+                icon: <Server size={20} />,
+                title: "Production APIs",
+                text: "Backend APIs built around real application requirements and structured data flows.",
+              },
+              {
+                icon: <ShieldCheck size={20} />,
+                title: "Secure Authentication",
+                text: "Authentication, authorization, protected routes and middleware-based access control.",
+              },
+              {
+                icon: <LayoutDashboard size={20} />,
+                title: "Admin Dashboards",
+                text: "Management dashboards for handling users, content, transactions and application data.",
+              },
+              {
+                icon: <Database size={20} />,
+                title: "Database Systems",
+                text: "MongoDB-backed applications with structured models and API-driven data management.",
+              },
+              {
+                icon: <Palette size={20} />,
+                title: "Business Graphics",
+                text: "Professional business cards, flyers, social media graphics, brochures and promotional designs.",
+              },
+            ].map((item) => (
               <div
-                key={i}
-                className="glass-card p-6 text-center"
+                key={item.title}
+                className="rounded-xl border border-white/10 bg-white/[0.02] p-5 hover:bg-white/[0.045] hover:border-cyan-400/20 transition"
               >
-                <div
-                  className="text-3xl font-black mb-3 gradient-text"
-                >
-                  0{i + 1}
+                <div className="w-10 h-10 rounded-lg bg-cyan-400/10 text-cyan-400 flex items-center justify-center mb-4">
+                  {item.icon}
                 </div>
 
-                <p>{step}</p>
+                <h3 className="text-base font-semibold">
+                  {item.title}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-slate-500 leading-6 mt-2">
+                  {item.text}
+                </p>
               </div>
             ))}
 
           </div>
         </div>
       </section>
-      {/* ═══════════════ CTA ════════════════════════════════════════════════ */}
-      <section className="py-24 px-4 sm:px-6 section-border-top">
-        <div className="max-w-4xl mx-auto">
-          <div
-            className="rounded-2xl p-10 sm:p-14 text-center fade-up"
-            style={{
-              background: 'linear-gradient(135deg, rgba(45,212,191,0.08), rgba(129,140,248,0.08))',
-              border: '1px solid rgba(45,212,191,0.18)',
-              backdropFilter: 'blur(20px)',
-            }}
-          >
-            <div className="flex justify-center mb-5">
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: 'rgba(45,212,191,0.10)',
-                  border: '1px solid rgba(45,212,191,0.25)',
-                }}
-              >
-                <Zap size={30} style={{ color: '#2dd4bf' }} />
-              </div>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-              Need a Website That Brings Results?
+
+      {/* =========================
+          SERVICES
+      ========================= */}
+
+      <section className="py-20 bg-white/[0.012] border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em]">
+              Services
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+              Development & design services
             </h2>
-            <p
-              className="text-base sm:text-lg mb-8 max-w-2xl mx-auto leading-relaxed"
-              style={{ color: 'rgba(148,163,184,0.75)' }}
-            >
-              Let's discuss your project and build a fast,
-              modern website that helps your business grow,
-              generate leads and establish credibility online.
+
+            <p className="text-slate-400 text-sm sm:text-base mt-4 leading-7">
+              From complete web applications to business graphics, I help
+              businesses build and maintain the digital assets they need.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/Contact">
-                <button className="btn-glass-primary px-8 py-3.5 rounded-xl font-bold text-sm flex items-center gap-2">
-                  Get In Touch <ArrowRight size={16} />
-                </button>
-              </Link>
-              <a href="https://wa.me/2348144331503" target="_blank" rel="noopener noreferrer">
-                <button className="btn-glass-outline px-8 py-3.5 rounded-xl font-bold text-sm flex items-center gap-2">
-                  WhatsApp Me
-                </button>
-              </a>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            {services.map((service) => (
+              <div
+                key={service.title}
+                className="group rounded-xl border border-white/10 bg-[#020617]/70 p-5 hover:border-cyan-400/20 hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="w-11 h-11 rounded-lg bg-cyan-400/10 text-cyan-400 flex items-center justify-center mb-5 group-hover:bg-cyan-400/15 transition">
+                  {service.icon}
+                </div>
+
+                <h3 className="text-base font-semibold">
+                  {service.title}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-slate-500 leading-6 mt-2.5">
+                  {service.description}
+                </p>
+
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-2 text-cyan-400 text-xs sm:text-sm mt-5 hover:text-cyan-300 transition"
+                >
+                  View service
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          GRAPHICS DESIGN
+      ========================= */}
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden">
+
+            <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
+
+              {/* Left */}
+              <div className="p-7 md:p-10 border-b lg:border-b-0 lg:border-r border-white/10">
+
+                <div className="flex items-center gap-3 mb-5">
+                  <Palette
+                    size={18}
+                    className="text-cyan-400"
+                  />
+
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-cyan-400">
+                    Graphics Design
+                  </span>
+                </div>
+
+                <h2 className="text-2xl md:text-4xl font-semibold tracking-tight leading-tight">
+                  Your business should
+                  <br />
+                  <span className="text-slate-500">
+                    look professional too.
+                  </span>
+                </h2>
+
+                <p className="mt-5 text-sm text-slate-400 leading-7 max-w-md">
+                  Beyond web development, I create practical graphics that
+                  businesses can use for marketing, branding, social media,
+                  promotions and print.
+                </p>
+
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-2 mt-7 text-sm text-cyan-400 hover:text-cyan-300 transition"
+                >
+                  Explore design services
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+
+              {/* Right */}
+              <div className="grid sm:grid-cols-2">
+
+                {[
+                  {
+                    icon: <CreditCard size={20} />,
+                    title: "Business Cards",
+                    text: "Professional front-and-back business card designs.",
+                  },
+                  {
+                    icon: <Megaphone size={20} />,
+                    title: "Flyers & Posters",
+                    text: "Promotional designs for offers, events and services.",
+                  },
+                  {
+                    icon: <Image size={20} />,
+                    title: "Social Media Graphics",
+                    text: "Branded posts, adverts, banners and promotional graphics.",
+                  },
+                  {
+                    icon: <FileImage size={20} />,
+                    title: "Brochures & Profiles",
+                    text: "Company profiles, brochures and branded business documents.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.title}
+                    className="p-6 md:p-8 border-b border-white/10"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-slate-300">
+                      {item.icon}
+                    </div>
+
+                    <h3 className="mt-5 text-sm font-medium text-white">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-2.5 text-xs sm:text-sm leading-6 text-slate-500">
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
+
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* =========================
+          FEATURED PROJECTS
+      ========================= */}
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+
+            <div className="max-w-2xl">
+              <span className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em]">
+                Selected Work
+              </span>
+
+              <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+                Featured projects
+              </h2>
+
+              <p className="text-slate-400 text-sm sm:text-base mt-4 leading-7">
+                A selection of websites and full-stack applications built for
+                real-world use cases.
+              </p>
+            </div>
+
+            <Link
+              to="/projects"
+              className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 transition"
+            >
+              View all projects
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+
+            {featuredProjects.map((project) => (
+              <div
+                key={project.title}
+                className="group rounded-2xl border border-white/10 bg-white/[0.02] overflow-hidden hover:border-cyan-400/20 transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="h-56 relative overflow-hidden">
+
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/20 to-transparent" />
+
+                  <div className="absolute top-4 left-4">
+                    <span className="px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-[10px] text-white">
+                      {project.category}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-4 left-4">
+                    <span className="text-[11px] text-cyan-300">
+                      {project.role}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+
+                  <div className="flex items-start justify-between gap-4">
+
+                    <div>
+                      <h3 className="text-xl font-bold">
+                        {project.title}
+                      </h3>
+
+                      <p className="text-slate-400 text-xs sm:text-sm leading-6 mt-2.5">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View ${project.title}`}
+                      className="shrink-0 w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400/30 transition"
+                    >
+                      <ExternalLink size={16} />
+                    </a>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 mt-5">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-[10px] text-slate-400"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          SKILLS
+      ========================= */}
+
+      <section className="py-20 bg-white/[0.012] border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="text-center max-w-2xl mx-auto mb-12">
+
+            <span className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em]">
+              Technical Skills
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+              My development toolkit
+            </h2>
+
+            <p className="text-slate-400 text-sm sm:text-base mt-4 leading-7">
+              Technologies I use to design, develop, connect and deploy modern
+              web applications.
+            </p>
+
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+
+            {/* Frontend */}
+            <div className="rounded-xl border border-white/10 bg-[#020617]/70 p-6">
+
+              <div className="flex items-center gap-3 mb-5">
+
+                <div className="w-10 h-10 rounded-lg bg-cyan-400/10 text-cyan-400 flex items-center justify-center">
+                  <Code2 size={20} />
+                </div>
+
+                <h3 className="text-lg font-semibold">
+                  Frontend
+                </h3>
+
+              </div>
+
+              <div className="space-y-3">
+
+                {[
+                  "React & Vite",
+                  "JavaScript",
+                  "TypeScript",
+                  "Tailwind CSS",
+                  "HTML & CSS",
+                  "Responsive Design",
+                ].map((skill) => (
+                  <div
+                    key={skill}
+                    className="flex items-center gap-3 text-xs sm:text-sm text-slate-400"
+                  >
+                    <CheckCircle2
+                      size={15}
+                      className="text-cyan-400"
+                    />
+
+                    {skill}
+                  </div>
+                ))}
+
+              </div>
+            </div>
+
+            {/* Backend */}
+            <div className="rounded-xl border border-white/10 bg-[#020617]/70 p-6">
+
+              <div className="flex items-center gap-3 mb-5">
+
+                <div className="w-10 h-10 rounded-lg bg-blue-400/10 text-blue-400 flex items-center justify-center">
+                  <Server size={20} />
+                </div>
+
+                <h3 className="text-lg font-semibold">
+                  Backend
+                </h3>
+
+              </div>
+
+              <div className="space-y-3">
+
+                {[
+                  "Node.js & Express",
+                  "MongoDB",
+                  "REST APIs",
+                  "JWT Authentication",
+                  "Middleware",
+                  "Database Integration",
+                ].map((skill) => (
+                  <div
+                    key={skill}
+                    className="flex items-center gap-3 text-xs sm:text-sm text-slate-400"
+                  >
+                    <CheckCircle2
+                      size={15}
+                      className="text-blue-400"
+                    />
+
+                    {skill}
+                  </div>
+                ))}
+
+              </div>
+            </div>
+
+            {/* Tools */}
+            <div className="rounded-xl border border-white/10 bg-[#020617]/70 p-6">
+
+              <div className="flex items-center gap-3 mb-5">
+
+                <div className="w-10 h-10 rounded-lg bg-emerald-400/10 text-emerald-400 flex items-center justify-center">
+                  <GitBranch size={20} />
+                </div>
+
+                <h3 className="text-lg font-semibold">
+                  Tools & Deployment
+                </h3>
+
+              </div>
+
+              <div className="space-y-3">
+
+                {[
+                  "Git & GitHub",
+                  "Vercel",
+                  "Render",
+                  "Postman",
+                  "VS Code",
+                  "npm",
+                ].map((skill) => (
+                  <div
+                    key={skill}
+                    className="flex items-center gap-3 text-xs sm:text-sm text-slate-400"
+                  >
+                    <CheckCircle2
+                      size={15}
+                      className="text-emerald-400"
+                    />
+
+                    {skill}
+                  </div>
+                ))}
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          PROCESS
+      ========================= */}
+
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+
+          <div className="text-center max-w-2xl mx-auto mb-12">
+
+            <span className="text-cyan-400 text-xs font-semibold uppercase tracking-[0.2em]">
+              My Process
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+              From idea to deployment
+            </h2>
+
+            <p className="text-slate-400 text-sm sm:text-base mt-4 leading-7">
+              A structured approach that keeps the project clear from the
+              initial idea through development and launch.
+            </p>
+
+          </div>
+
+          <div className="grid md:grid-cols-5 gap-3">
+
+            {[
+              {
+                number: "01",
+                title: "Discovery",
+                text: "Understand the goals, users and requirements.",
+              },
+              {
+                number: "02",
+                title: "Planning",
+                text: "Structure the pages, features, stack and workflow.",
+              },
+              {
+                number: "03",
+                title: "Development",
+                text: "Build the interface, backend and required integrations.",
+              },
+              {
+                number: "04",
+                title: "Testing",
+                text: "Test responsiveness, functionality and application flows.",
+              },
+              {
+                number: "05",
+                title: "Launch",
+                text: "Deploy the application and prepare it for real users.",
+              },
+            ].map((step) => (
+              <div
+                key={step.number}
+                className="rounded-xl border border-white/10 bg-white/[0.02] p-5"
+              >
+                <span className="text-3xl font-bold text-white/[0.08]">
+                  {step.number}
+                </span>
+
+                <h3 className="text-base font-semibold mt-4">
+                  {step.title}
+                </h3>
+
+                <p className="text-xs sm:text-sm text-slate-500 leading-6 mt-2">
+                  {step.text}
+                </p>
+              </div>
+            ))}
+
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          OPPORTUNITIES CTA
+      ========================= */}
+
+      <section className="py-20">
+        <div className="max-w-5xl mx-auto px-6">
+
+          <div className="relative overflow-hidden rounded-2xl border border-cyan-400/15 bg-gradient-to-br from-cyan-400/[0.07] via-blue-500/[0.05] to-transparent p-7 sm:p-10 text-center">
+
+            <div className="absolute -top-20 -right-20 w-56 h-56 bg-cyan-400/10 blur-3xl rounded-full" />
+
+            <div className="absolute -bottom-20 -left-20 w-56 h-56 bg-blue-500/10 blur-3xl rounded-full" />
+
+            <div className="relative z-10">
+
+              <div className="w-12 h-12 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center mx-auto mb-5">
+                <BriefcaseBusiness
+                  className="text-cyan-400"
+                  size={23}
+                />
+              </div>
+
+              <p className="text-[10px] uppercase tracking-[0.2em] text-cyan-400">
+                Open to opportunities
+              </p>
+
+              <h2 className="text-2xl sm:text-3xl font-bold mt-3">
+                Let's build something useful.
+              </h2>
+
+              <p className="max-w-2xl mx-auto text-slate-400 text-sm sm:text-base mt-4 leading-7">
+                I'm currently working as a Full-Stack Developer Intern at
+                SmartPay and remain open to remote jobs, freelance projects,
+                contracts, collaborations and other development opportunities.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3 mt-7">
+
+                <Link
+                  to="/Contact"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-slate-950 text-sm font-semibold hover:bg-cyan-50 transition"
+                >
+                  Discuss a Project
+                  <ArrowRight size={17} />
+                </Link>
+
+                <a
+                  href="https://wa.me/2348144331503"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-white/15 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] transition"
+                >
+                  WhatsApp Me
+                  <ExternalLink size={16} />
+                </a>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================
+          FOOTER
+      ========================= */}
+
+      {/* <Footer /> */}
     </div>
-
-
   );
 };
 

@@ -1,471 +1,729 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Twitter, MessageSquare, User, AtSign, CheckCircle, Instagram } from 'lucide-react';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import { MessageCircle } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Linkedin,
+  Github,
+  Twitter,
+  MessageSquare,
+  User,
+  AtSign,
+  CheckCircle,
+  Instagram,
+  MessageCircle,
+} from "lucide-react";
 
-const SERVICE_ID  = 'service_lksueap';
-const TEMPLATE_ID = 'template_p5tqs1b';
-const PUBLIC_KEY  = 'fTOYbzk4T_L7BKCLG';
+// import Header from "../components/layout/Header";
+// import Footer from "../components/layout/Footer";
+import Background from "../components/Background";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+const SERVICE_ID = "service_lksueap";
+const TEMPLATE_ID = "template_p5tqs1b";
+const PUBLIC_KEY = "fTOYbzk4T_L7BKCLG";
+
+const INITIAL_FORM = {
+  name: "",
+  email: "",
+  budget: "₦200,000 - ₦500,000",
+  projectType: "Business Website",
+  message: "",
+};
 
 const contactInfo = [
   {
     icon: <MessageCircle size={20} />,
-    label: 'WhatsApp',
-    value: '+234 814 433 1503',
-    link: 'https://wa.me/2348144331503',
-    description: 'Fastest way to reach me',
+    label: "WhatsApp",
+    value: "+234 814 433 1503",
+    link: "https://wa.me/2348144331503",
   },
   {
     icon: <Mail size={20} />,
-    label: 'Email',
-    value: 'omodeletemitope12@gmail.com',
-    link: 'mailto:omodeletemitope12@gmail.com',
-    description: 'Professional inquiries welcome',
+    label: "Email",
+    value: "omodeletemitope12@gmail.com",
+    link: "mailto:omodeletemitope12@gmail.com",
   },
   {
     icon: <Phone size={20} />,
-    label: 'Phone',
-    value: '+234 814 433 1503',
-    link: 'tel:+2348144331503',
-    description: 'Mon–Fri, 9 AM – 6 PM WAT',
+    label: "Phone",
+    value: "+234 814 433 1503",
+    link: "tel:+2348144331503",
   },
   {
     icon: <MapPin size={20} />,
-    label: 'Location',
-    value: 'Oyo State, Nigeria',
+    label: "Location",
+    value: "Oyo State, Nigeria",
     link: null,
-    description: 'Available for remote collaboration',
   },
 ];
 
 const socialLinks = [
-  { icon: <Linkedin size={20} />, label: 'LinkedIn', link: 'https://www.linkedin.com/in/temitope-omodele-07b977404', username: '@Temitope', color: 'rgba(59,130,246,0.25)' },
-  { icon: <Github size={20} />, label: 'GitHub', link: 'https://github.com/emitteremit', username: '@emitteremit', color: 'rgba(139,92,246,0.25)' },
-  { icon: <Twitter size={20} />, label: 'Twitter / X', link: 'https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09', username: '@Emmiter001', color: 'rgba(14,165,233,0.25)' },
-  { icon: <Instagram size={20} />, label: 'Instagram', link: 'https://www.instagram.com/emit2113/', username: 'Emit2113', color: 'rgba(233, 138, 14, 0.25)' },
+  {
+    icon: <Linkedin size={18} />,
+    label: "LinkedIn",
+    link: "https://www.linkedin.com/in/temitope-omodele-07b977404",
+  },
+  {
+    icon: <Github size={18} />,
+    label: "GitHub",
+    link: "https://github.com/emitteremit",
+  },
+  {
+    icon: <Twitter size={18} />,
+    label: "X / Twitter",
+    link: "https://x.com/Emmiter001?t=bJNnYymgOw6HuRgTSicLnw&s=09",
+  },
+  {
+    icon: <Instagram size={18} />,
+    label: "Instagram",
+    link: "https://www.instagram.com/emit2113/",
+  },
 ];
 
-const INITIAL_FORM = {
-  name: '',
-  email: '',
-  budget: '₦200,000 - ₦500,000',
-  projectType: 'Business Website',
-  message: '',
-};
+const projectTypes = [
+  "Business Website",
+  "E-Commerce",
+  "Admin Dashboard",
+  "Booking System",
+  "Healthcare Platform",
+  "Real Estate",
+  "Fintech / Web App",
+  "Portfolio Website",
+  "Custom Web Application",
+  "Website Redesign",
+];
 
-const Contact = () => {
-  const [form, setForm]               = useState(INITIAL_FORM);
-  const [errors, setErrors]           = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError]   = useState('');
+const serviceCards = [
+  {
+    number: "01",
+    title: "Websites",
+    description:
+      "Modern, responsive websites designed around your business and audience.",
+  },
+  {
+    number: "02",
+    title: "Web Applications",
+    description:
+      "Interactive platforms, dashboards and custom applications with real functionality.",
+  },
+  {
+    number: "03",
+    title: "E-Commerce",
+    description:
+      "Online stores with product management, customer flows and scalable architecture.",
+  },
+  {
+    number: "04",
+    title: "Business Systems",
+    description:
+      "Custom digital systems that help businesses manage operations more efficiently.",
+  },
+];
+
+function Contact() {
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [errors, setErrors] = useState({});
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    // Clear the error for this field on change
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
     if (errors[`${name}Error`]) {
-      setErrors((prev) => ({ ...prev, [`${name}Error`]: '' }));
+      setErrors((prev) => ({
+        ...prev,
+        [`${name}Error`]: "",
+      }));
+    }
+
+    if (error) {
+      setError("");
     }
   };
 
   const validate = () => {
-    const errs = {};
-    if (!form.name.trim())    errs.nameError    = 'Name is required';
-    if (!form.email.trim())   errs.emailError   = 'Email is required';
-    else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(form.email))
-      errs.emailError = 'Invalid email address';
-    if (!form.message.trim()) errs.messageError = 'Message is required';
-    return errs;
+    const newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.nameError = "Please enter your name.";
+    }
+
+    if (!form.email.trim()) {
+      newErrors.emailError = "Please enter your email address.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.emailError = "Please enter a valid email address.";
+    }
+
+    if (!form.message.trim()) {
+      newErrors.messageError =
+        "Please tell me a little about your project.";
+    } else if (form.message.trim().length < 10) {
+      newErrors.messageError =
+        "Please provide a little more detail about your project.";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
-    const check = validate();
-    if (Object.keys(check).length > 0) { setErrors(check); return; }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    setIsSubmitting(true);
-    setSubmitError('');
+    setSuccess(false);
+    setError("");
 
-    // These keys must match the variables in your EmailJS template:
-    // {{user_name}}, {{user_email}}, {{subject}}, {{message}}
-    const templateParams = {
-      user_name:   form.name,
-      user_email:  form.email,
-      subject:     `[${form.projectType}] — Budget: ${form.budget}`,
-      message:     form.message,
-    };
+    if (!validate()) return;
+
+    setSending(true);
 
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+      const templateParams = {
+        user_name: form.name,
+        user_email: form.email,
+        subject: `[${form.projectType}] — Budget: ${form.budget}`,
+        message: form.message,
+        project_type: form.projectType,
+        budget: form.budget,
+        reply_to: form.email,
+      };
+
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        templateParams,
+        PUBLIC_KEY
+      );
+
+      setSuccess(true);
       setForm(INITIAL_FORM);
       setErrors({});
-      setSubmitSuccess(true);
-      setTimeout(() => setSubmitSuccess(false), 5000);
+
+      setTimeout(() => {
+        setSuccess(false);
+      }, 7000);
     } catch (err) {
-      console.error('EmailJS error:', err);
-      setSubmitError('Something went wrong. Please try again or reach out via WhatsApp.');
+      console.error("EmailJS Error:", err);
+
+      setError(
+        "Something went wrong while sending your message. Please try WhatsApp or email instead."
+      );
     } finally {
-      setIsSubmitting(false);
+      setSending(false);
     }
   };
 
   return (
     <>
       <Header />
-      <div className="relative min-h-screen overflow-hidden mt-[70px]" style={{ background: 'transparent' }}>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
+      <main className="relative min-h-screen overflow-hidden text-white">
+        {/* BACKGROUND */}
+        <div className="pointer-events-none fixed inset-0 -z-10">
+          <Background />
+        </div>
 
-          {/* Hero */}
-          <div className="text-center mb-16 fade-up">
-            <div
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-sm font-semibold mb-6"
-              style={{
-                background: 'rgba(45,212,191,0.08)',
-                border: '1px solid rgba(45,212,191,0.25)',
-                backdropFilter: 'blur(12px)',
-                color: '#2dd4bf',
-              }}
-            >
-              <span className="pulse-dot" />
-              Available for Projects
-            </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-              Start Your Next Project
-            </h1>
-            <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(148,163,184,0.80)' }}>
-              Looking for a modern website, admin dashboard,
-              healthcare platform, booking system or custom web application?
-              Let's discuss your ideas and bring them to life.
-            </p>
-          </div>
+        {/* DARK OVERLAY */}
+        <div className="pointer-events-none fixed inset-0 -z-[5] bg-black/10" />
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-            {['Business Websites', 'Admin Dashboards', 'E-Commerce', 'Full-Stack Apps'].map((item, i) => (
-              <div key={i} className="glass-card p-4 text-center">
-                <span className="font-semibold">{item}</span>
-              </div>
-            ))}
-          </div>
+        <div className="relative z-10">
+          {/* HERO */}
+          <section className="px-6 pb-20 pt-28 sm:px-10 lg:px-16 lg:pb-28 lg:pt-36">
+            <div className="mx-auto max-w-7xl">
+              <div className="max-w-4xl">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm font-medium text-cyan-300 backdrop-blur-md">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-400" />
+                  Available for Projects
+                </div>
 
-          {/* Content grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+                <h1 className="text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+                  Start Your
+                  <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                    Next Project.
+                  </span>
+                </h1>
 
-            {/* Left — Contact Info */}
-            <div className="lg:col-span-1 space-y-5 fade-up fade-up-delay-1">
-              <div>
-                <h2 className="text-xl font-bold text-white mb-2">Contact Information</h2>
-                <p className="text-sm" style={{ color: 'rgba(148,163,184,0.70)' }}>
-                  Feel free to reach out through any of these channels. I typically respond within 24–48 hours.
+                <p className="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+                  Looking for a modern website, admin dashboard, healthcare
+                  platform, booking system or custom web application? Let's
+                  discuss your ideas and bring them to life.
                 </p>
               </div>
 
-              {contactInfo.map((info, i) => (
-                <div key={i} className="glass-card p-5 group">
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="p-2.5 rounded-xl flex-shrink-0 transition-all duration-300 group-hover:scale-110"
-                      style={{
-                        background: 'rgba(45,212,191,0.10)',
-                        border: '1px solid rgba(45,212,191,0.20)',
-                        color: '#2dd4bf',
-                      }}
-                    >
-                      {info.icon}
+              {/* SERVICE CARDS */}
+              <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {serviceCards.map((item) => (
+                  <div
+                    key={item.number}
+                    className="group rounded-2xl border border-white/10 bg-white/[0.04] p-6 shadow-xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-cyan-400/30 hover:bg-white/[0.07]"
+                  >
+                    <div className="mb-5 flex items-center justify-between">
+                      <span className="text-xs font-bold tracking-[0.2em] text-cyan-400">
+                        {item.number}
+                      </span>
+
+                      <span className="h-px w-10 bg-white/15 transition-all duration-300 group-hover:w-16 group-hover:bg-cyan-400" />
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold mb-1" style={{ color: 'rgba(148,163,184,0.60)' }}>{info.label}</p>
-                      {info.link ? (
-                        <a
-                          href={info.link}
-                          className="text-sm font-semibold block mb-0.5 truncate transition-colors duration-200"
-                          style={{ color: 'rgba(241,245,249,0.90)' }}
-                          onMouseEnter={e => e.currentTarget.style.color = '#2dd4bf'}
-                          onMouseLeave={e => e.currentTarget.style.color = 'rgba(241,245,249,0.90)'}
-                        >
-                          {info.value}
-                        </a>
-                      ) : (
-                        <p className="text-sm font-semibold mb-0.5" style={{ color: 'rgba(241,245,249,0.90)' }}>{info.value}</p>
-                      )}
-                      <p className="text-xs" style={{ color: 'rgba(148,163,184,0.50)' }}>{info.description}</p>
-                    </div>
+
+                    <h3 className="text-lg font-semibold text-white">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-2 text-sm leading-6 text-slate-400">
+                      {item.description}
+                    </p>
                   </div>
-                </div>
-              ))}
-
-              {/* Social */}
-              <div className="glass-card p-5">
-                <h3 className="text-base font-bold text-white mb-4">Connect With Me</h3>
-                <div className="space-y-2">
-                  {socialLinks.map((s, i) => (
-                    <a
-                      key={i}
-                      href={s.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 p-3 rounded-xl transition-all duration-300 group"
-                      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.background = s.color;
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
-                      }}
-                    >
-                      <div style={{ color: '#2dd4bf' }}>{s.icon}</div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-white">{s.label}</p>
-                        <p className="text-xs" style={{ color: 'rgba(148,163,184,0.55)' }}>{s.username}</p>
-                      </div>
-                      <Send size={13} style={{ color: 'rgba(148,163,184,0.40)' }} className="group-hover:text-teal-400 transition-colors" />
-                    </a>
-                  ))}
-                </div>
+                ))}
               </div>
+            </div>
+          </section>
 
-              {/* Response time */}
-              <div
-                className="p-4 rounded-xl flex items-start gap-3"
-                style={{ background: 'rgba(45,212,191,0.05)', border: '1px solid rgba(45,212,191,0.18)' }}
-              >
-                <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0, marginTop: '2px' }} />
-                <div>
-                  <p className="text-sm font-semibold text-white mb-1">Quick Response Time</p>
-                  <p className="text-xs leading-relaxed" style={{ color: 'rgba(148,163,184,0.65)' }}>
-                    I aim to respond to all inquiries within 24–48 hours during business days.
+          {/* CONTACT SECTION */}
+          <section className="px-6 py-20 sm:px-10 lg:px-16">
+            <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr]">
+              {/* LEFT */}
+              <div>
+                <div className="mb-8">
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">
+                    Let's Connect
+                  </p>
+
+                  <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    Let's build something useful.
+                  </h2>
+
+                  <p className="mt-4 max-w-lg leading-7 text-slate-400">
+                    Whether you have a complete project idea or you're still
+                    figuring things out, send me a message and we can discuss
+                    what you need.
                   </p>
                 </div>
-              </div>
-            </div>
 
-            {/* Right — Form */}
-            <div className="lg:col-span-2 fade-up fade-up-delay-2">
-              <div className="glass-card p-8 lg:p-10">
-                <h2 className="text-2xl font-bold text-white mb-2">Send a Message</h2>
-                <p className="text-sm mb-8" style={{ color: 'rgba(148,163,184,0.70)' }}>
-                  Fill out the form below and I'll get back to you as soon as possible.
-                </p>
-
-                {/* Success banner */}
-                {submitSuccess && (
-                  <div
-                    className="mb-6 flex items-center gap-3 p-4 rounded-xl"
-                    style={{ background: 'rgba(45,212,191,0.10)', border: '1px solid rgba(45,212,191,0.30)' }}
-                  >
-                    <CheckCircle size={18} style={{ color: '#2dd4bf', flexShrink: 0 }} />
-                    <p className="text-sm font-medium" style={{ color: '#2dd4bf' }}>
-                      Message sent! I'll get back to you soon.
-                    </p>
-                  </div>
-                )}
-
-                {/* Error banner */}
-                {submitError && (
-                  <div
-                    className="mb-6 flex items-center gap-3 p-4 rounded-xl"
-                    style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.30)' }}
-                  >
-                    <p className="text-sm font-medium" style={{ color: '#f87171' }}>
-                      ⚠ {submitError}
-                    </p>
-                  </div>
-                )}
-
-                <div className="space-y-6">
-
-                  {/* Name */}
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
-                      Full Name <span style={{ color: '#2dd4bf' }}>*</span>
-                    </label>
-                    <div className="relative">
-                      <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.40)' }} />
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        placeholder="John Doe"
-                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
-                        style={{ borderColor: errors.nameError ? 'rgba(239,68,68,0.50)' : undefined }}
-                      />
-                    </div>
-                    {errors.nameError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.nameError}</p>
-                    )}
-                  </div>
-
-                  {/* Email */}
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
-                      Email Address <span style={{ color: '#2dd4bf' }}>*</span>
-                    </label>
-                    <div className="relative">
-                      <AtSign size={16} className="absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'rgba(148,163,184,0.40)' }} />
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="john@example.com"
-                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm"
-                        style={{ borderColor: errors.emailError ? 'rgba(239,68,68,0.50)' : undefined }}
-                      />
-                    </div>
-                    {errors.emailError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.emailError}</p>
-                    )}
-                  </div>
-
-                  {/* Budget */}
-                  <div>
-                    <label htmlFor="budget" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
-                      Project Budget
-                    </label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={form.budget}
-                      onChange={handleChange}
-                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
-                    >
-                      <option className='text-black'>₦200,000 - ₦500,000</option>
-                      <option className='text-black'>Less than ₦200,000</option>
-                      <option className='text-black'>₦500,000 - ₦1,000,000</option>
-                      <option className='text-black'>₦1,000,000+</option>
-                    </select>
-                  </div>
-
-                  {/* Project Type */}
-                  <div>
-                    <label htmlFor="projectType" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
-                      Project Type
-                    </label>
-                    <select
-                      id="projectType"
-                      name="projectType"
-                      value={form.projectType}
-                      onChange={handleChange}
-                      className="glass-input w-full px-4 py-3.5 rounded-xl text-sm"
-                    >
-                      <option className='text-black'>Business Website</option>
-                      <option className='text-black'>E-Commerce</option>
-                      <option className='text-black'>Admin Dashboard</option>
-                      <option className='text-black'>Portfolio Website</option>
-                      <option className='text-black'>Custom Web App</option>
-                    </select>
-                  </div>
-
-                  {/* Message */}
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-semibold mb-2.5" style={{ color: 'rgba(203,213,225,0.85)' }}>
-                      Message <span style={{ color: '#2dd4bf' }}>*</span>
-                    </label>
-                    <div className="relative">
-                      <MessageSquare size={16} className="absolute left-4 top-4" style={{ color: 'rgba(148,163,184,0.40)' }} />
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={form.message}
-                        onChange={handleChange}
-                        placeholder="Tell me about your project, timeline, and budget..."
-                        rows={6}
-                        className="glass-input w-full pl-11 pr-4 py-3.5 rounded-xl text-sm resize-none"
-                        style={{ borderColor: errors.messageError ? 'rgba(239,68,68,0.50)' : undefined }}
-                      />
-                    </div>
-                    {errors.messageError && (
-                      <p className="text-xs mt-2 flex items-center gap-1.5" style={{ color: '#f87171' }}>⚠ {errors.messageError}</p>
-                    )}
-                  </div>
-
-                  {/* Submit */}
-                  <button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="btn-glass-primary w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl text-base font-bold disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
+                {/* CONTACT INFO */}
+                <div className="space-y-3">
+                  {contactInfo.map((item) => {
+                    const content = (
                       <>
-                        <div className="w-5 h-5 rounded-full border-2 border-black/30 border-t-black animate-spin" />
-                        Sending…
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-cyan-400/10 text-cyan-400">
+                          {item.icon}
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                            {item.label}
+                          </p>
+
+                          <p className="mt-1 truncate text-sm font-medium text-slate-200 sm:text-base">
+                            {item.value}
+                          </p>
+                        </div>
+                      </>
+                    );
+
+                    if (item.link) {
+                      return (
+                        <a
+                          key={item.label}
+                          href={item.link}
+                          target={
+                            item.link.startsWith("http")
+                              ? "_blank"
+                              : undefined
+                          }
+                          rel={
+                            item.link.startsWith("http")
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                          className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-white/[0.06]"
+                        >
+                          {content}
+                        </a>
+                      );
+                    }
+
+                    return (
+                      <div
+                        key={item.label}
+                        className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 backdrop-blur-xl"
+                      >
+                        {content}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* SOCIALS */}
+                <div className="mt-8">
+                  <p className="mb-4 text-sm font-semibold text-slate-300">
+                    Connect With Me
+                  </p>
+
+                  <div className="flex flex-wrap gap-3">
+                    {socialLinks.map((social) => (
+                      <a
+                        key={social.label}
+                        href={social.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.label}
+                        className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.035] text-slate-400 backdrop-blur-xl transition hover:-translate-y-1 hover:border-cyan-400/30 hover:bg-cyan-400/10 hover:text-cyan-400"
+                      >
+                        {social.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* RESPONSE CARD */}
+                <div className="mt-8 rounded-2xl border border-cyan-400/15 bg-cyan-400/[0.06] p-5 backdrop-blur-xl">
+                  <div className="flex gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-400/10 text-cyan-400">
+                      <MessageSquare size={18} />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-white">
+                        Quick Response
+                      </h3>
+
+                      <p className="mt-1 text-sm leading-6 text-slate-400">
+                        I typically respond within 24–48 hours. For faster
+                        communication, you can reach me directly on WhatsApp.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FORM */}
+              <div className="rounded-3xl border border-white/10 bg-black/20 p-6 shadow-2xl backdrop-blur-2xl sm:p-8 lg:p-10">
+                <div className="mb-8">
+                  <p className="mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">
+                    Project Enquiry
+                  </p>
+
+                  <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                    Tell me about your project
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    Share the basics and I'll get back to you with the next
+                    steps.
+                  </p>
+                </div>
+
+                {success && (
+                  <div className="mb-6 flex items-start gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/10 p-4 text-emerald-300">
+                    <CheckCircle className="mt-0.5 shrink-0" size={20} />
+
+                    <div>
+                      <p className="font-semibold">
+                        Message sent successfully!
+                      </p>
+
+                      <p className="mt-1 text-sm text-emerald-200/70">
+                        Thanks for reaching out. I'll get back to you soon.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="mb-6 flex items-start gap-3 rounded-2xl border border-red-400/20 bg-red-400/10 p-4 text-red-300">
+                    <MessageSquare className="mt-0.5 shrink-0" size={20} />
+
+                    <div>
+                      <p className="font-semibold">
+                        Unable to send message
+                      </p>
+
+                      <p className="mt-1 text-sm text-red-200/70">
+                        {error}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* NAME + EMAIL */}
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="name"
+                        className="mb-2 block text-sm font-semibold text-slate-300"
+                      >
+                        Full Name
+                      </label>
+
+                      <div className="relative">
+                        <User
+                          size={18}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+                        />
+
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          value={form.name}
+                          onChange={handleChange}
+                          autoComplete="name"
+                          placeholder="Your name"
+                          aria-invalid={Boolean(errors.nameError)}
+                          className={`w-full rounded-xl border bg-white/[0.04] py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 ${
+                            errors.nameError
+                              ? "border-red-400/50 focus:border-red-400"
+                              : "border-white/10 focus:border-cyan-400/50 focus:bg-white/[0.06]"
+                          }`}
+                        />
+                      </div>
+
+                      {errors.nameError && (
+                        <p className="mt-2 text-xs text-red-400">
+                          {errors.nameError}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="mb-2 block text-sm font-semibold text-slate-300"
+                      >
+                        Email Address
+                      </label>
+
+                      <div className="relative">
+                        <AtSign
+                          size={18}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+                        />
+
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={form.email}
+                          onChange={handleChange}
+                          autoComplete="email"
+                          placeholder="you@example.com"
+                          aria-invalid={Boolean(errors.emailError)}
+                          className={`w-full rounded-xl border bg-white/[0.04] py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 ${
+                            errors.emailError
+                              ? "border-red-400/50 focus:border-red-400"
+                              : "border-white/10 focus:border-cyan-400/50 focus:bg-white/[0.06]"
+                          }`}
+                        />
+                      </div>
+
+                      {errors.emailError && (
+                        <p className="mt-2 text-xs text-red-400">
+                          {errors.emailError}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* BUDGET + TYPE */}
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="budget"
+                        className="mb-2 block text-sm font-semibold text-slate-300"
+                      >
+                        Project Budget
+                      </label>
+
+                      <select
+                        id="budget"
+                        name="budget"
+                        value={form.budget}
+                        onChange={handleChange}
+                        className="w-full rounded-xl border border-white/10 bg-slate-950/60 px-4 py-3.5 text-sm text-slate-200 outline-none transition focus:border-cyan-400/50"
+                      >
+                        <option>Below ₦200,000</option>
+                        <option>₦200,000 - ₦500,000</option>
+                        <option>₦500,000 - ₦800,000</option>
+                        <option>₦800,000 - ₦1,500,000</option>
+                        <option>₦1,500,000+</option>
+                        <option>Not sure yet</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="projectType"
+                        className="mb-2 block text-sm font-semibold text-slate-300"
+                      >
+                        Project Type
+                      </label>
+
+                      <select
+                        id="projectType"
+                        name="projectType"
+                        value={form.projectType}
+                        onChange={handleChange}
+                        className="w-full rounded-xl border border-white/10 bg-slate-950/60 px-4 py-3.5 text-sm text-slate-200 outline-none transition focus:border-cyan-400/50"
+                      >
+                        {projectTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* MESSAGE */}
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="mb-2 block text-sm font-semibold text-slate-300"
+                    >
+                      Tell Me About Your Project
+                    </label>
+
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={7}
+                      value={form.message}
+                      onChange={handleChange}
+                      placeholder="Tell me what you want to build, the problem you want to solve, important features, deadline, or anything else that may help..."
+                      aria-invalid={Boolean(errors.messageError)}
+                      className={`w-full resize-none rounded-xl border bg-white/[0.04] px-4 py-3.5 text-sm leading-6 text-white outline-none transition placeholder:text-slate-600 ${
+                        errors.messageError
+                          ? "border-red-400/50 focus:border-red-400"
+                          : "border-white/10 focus:border-cyan-400/50 focus:bg-white/[0.06]"
+                      }`}
+                    />
+
+                    {errors.messageError && (
+                      <p className="mt-2 text-xs text-red-400">
+                        {errors.messageError}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* SUBMIT */}
+                  <button
+                    type="submit"
+                    disabled={sending}
+                    className="group flex w-full items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-cyan-500/10 transition hover:scale-[1.01] hover:from-cyan-400 hover:to-blue-500 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+                  >
+                    {sending ? (
+                      <>
+                        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        Sending Message...
                       </>
                     ) : (
                       <>
-                        Send Message <Send size={18} />
+                        Send Project Enquiry
+                        <Send
+                          size={18}
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                        />
                       </>
                     )}
                   </button>
 
-                  <p className="text-xs text-center" style={{ color: 'rgba(148,163,184,0.40)' }}>
-                    By submitting this form, you agree to be contacted regarding your inquiry.
+                  <p className="text-center text-xs leading-5 text-slate-500">
+                    Your information is only used to respond to your project
+                    enquiry.
+                  </p>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          {/* BOTTOM CTA */}
+          <section className="px-6 py-20 sm:px-10 lg:px-16">
+            <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/10 bg-black/25 px-7 py-12 backdrop-blur-2xl sm:px-12 sm:py-16 lg:px-16">
+              <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan-500/15 blur-[90px]" />
+              <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/15 blur-[90px]" />
+
+              <div className="relative flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+                <div className="max-w-2xl">
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-cyan-400">
+                    Have An Idea?
                   </p>
 
+                  <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    Need a website that helps your business grow?
+                  </h2>
+
+                  <p className="mt-4 leading-7 text-slate-400">
+                    Let's turn your idea into a professional digital
+                    experience that your customers can actually use.
+                  </p>
+                </div>
+
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+                  <a
+                    href="https://wa.me/2348144331503"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white transition hover:scale-[1.02] hover:bg-[#20bd5b]"
+                  >
+                    <MessageCircle size={18} />
+                    WhatsApp Me
+                  </a>
+
+                  <a
+                    href="mailto:omodeletemitope12@gmail.com"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                  >
+                    <Mail size={18} />
+                    Send Email
+                  </a>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Bottom CTA */}
-          <div
-            className="mt-16 rounded-2xl p-10 text-center fade-up"
-            style={{
-              background: 'linear-gradient(135deg, rgba(45,212,191,0.08), rgba(129,140,248,0.08))',
-              border: '1px solid rgba(45,212,191,0.18)',
-              backdropFilter: 'blur(20px)',
-              animationDelay: '0.3s',
-            }}
-          >
-            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
-              Need a Website That Helps Your Business Grow?
-            </h3>
-            <p className="text-base max-w-2xl mx-auto" style={{ color: 'rgba(148,163,184,0.75)' }}>
-              Let's discuss your goals and create a modern,
-              high-performing digital experience tailored to your needs.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-              <a
-                href="https://wa.me/2348144331503"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-glass-primary px-8 py-4 rounded-xl font-bold"
-              >
-                WhatsApp Me
-              </a>
-              <a
-                href="mailto:omodeletemitope12@gmail.com"
-                className="glass-card px-8 py-4 rounded-xl font-bold"
-              >
-                Send Email
-              </a>
-            </div>
-          </div>
-
+          </section>
         </div>
+      </main>
 
-        {/* Floating WhatsApp button */}
-        <a
-          href="https://wa.me/2348144331503"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-[9999]"
+      {/* FLOATING WHATSAPP */}
+      <a
+        href="https://wa.me/2348144331503"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with me on WhatsApp"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_12px_35px_rgba(37,211,102,0.35)] transition duration-300 hover:scale-110 hover:bg-[#20bd5b]"
+      >
+        <svg
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-7 w-7"
+          aria-hidden="true"
         >
-          <div className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full shadow-xl flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110">
-            💬
-          </div>
-        </a>
+          <path
+            d="M16.001 3.2C9.04 3.2 3.4 8.84 3.4 15.8c0 2.22.58 4.3 1.6 6.1L3.2 28.8l7.08-1.76a12.56 12.56 0 0 0 5.72 1.36h.001c6.96 0 12.6-5.64 12.6-12.6S22.96 3.2 16.001 3.2Z"
+            fill="currentColor"
+          />
 
-        <Footer />
-      </div>
+          <path
+            d="M22.4 18.3c-.35-.18-2.08-1.03-2.4-1.15-.32-.12-.55-.18-.78.18-.23.35-.9 1.15-1.1 1.39-.2.23-.4.26-.75.09-.35-.18-1.47-.54-2.8-1.72-1.03-.92-1.72-2.06-1.92-2.4-.2-.35-.02-.54.15-.72.16-.16.35-.4.52-.6.18-.2.23-.35.35-.58.12-.23.06-.43-.03-.6-.09-.18-.78-1.89-1.07-2.59-.28-.68-.57-.59-.78-.6h-.66c-.23 0-.6.09-.92.43-.32.35-1.2 1.17-1.2 2.86s1.23 3.32 1.4 3.55c.18.23 2.42 3.7 5.87 5.18.82.35 1.46.56 1.96.72.82.26 1.57.22 2.16.13.66-.1 2.08-.85 2.37-1.67.29-.82.29-1.52.2-1.67-.09-.15-.32-.23-.67-.4Z"
+            fill="white"
+          />
+        </svg>
+      </a>
+
+      <Footer />
     </>
   );
-};
+}
 
 export default Contact;
